@@ -425,7 +425,7 @@ export default function ProfilePage() {
       <SignOutModal
         isOpen={showSignOutModal}
         onClose={() => setShowSignOutModal(false)}
-        userName={session?.user?.name || session?.user?.email || undefined}
+        userName={session?.user?.name || session?.user?.email}
       />
     </div>
   );

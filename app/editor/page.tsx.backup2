@@ -675,7 +675,7 @@ export default function EditorPage() {
                     {article.needsDecision && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                        className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
                         onClick={() => handleMakeDecision(article)}
                       >
                         做出决策
@@ -758,7 +758,7 @@ export default function EditorPage() {
                       {article.needsDecision && (
                         <Button 
                           size="sm" 
-                          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-xs px-3"
+                          className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-xs px-3"
                           onClick={() => handleMakeDecision(article)}
                         >
                           做出决策
@@ -935,7 +935,7 @@ export default function EditorPage() {
                     <Button 
                       type="submit"
                       disabled={loading}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                      className="flex-1 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
                     >
                       {loading ? '提交中...' : '确认决策'}
                     </Button>

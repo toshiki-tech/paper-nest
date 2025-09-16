@@ -1,5 +1,5 @@
-import { db } from './lib/db';
-import { users, categories } from './lib/db/schema';
+import { db } from './db';
+import { users, categories } from './db/schema';
 import bcrypt from 'bcryptjs';
 
 async function seed() {
@@ -15,31 +15,27 @@ async function seed() {
     const testUsers = await db.insert(users).values([
       {
         email: 'admin@test.com',
-        password: adminPassword,
+        passwordHash: adminPassword,
         name: '系统管理员',
         role: 'admin',
-        institution: '学术期刊管理协会',
       },
       {
         email: 'editor@test.com',
-        password: editorPassword,
+        passwordHash: editorPassword,
         name: '编辑主任',
         role: 'editor',
-        institution: '学术期刊编辑部',
       },
       {
         email: 'reviewer@test.com',
-        password: reviewerPassword,
+        passwordHash: reviewerPassword,
         name: '审稿专家',
         role: 'reviewer',
-        institution: '某某大学',
       },
       {
         email: 'author@test.com',
-        password: authorPassword,
+        passwordHash: authorPassword,
         name: '投稿作者',
         role: 'author',
-        institution: '研究机构',
       },
     ]).returning();
 

@@ -8,9 +8,9 @@ import { authOptions } from '@/lib/auth';
 // 更新文章状态
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions as any);
     
-    if (!session || (session.user.role !== 'editor' && session.user.role !== 'admin')) {
+    if (!session || !(session as any).user || ((session as any).user.role !== 'editor' && (session as any).user.role !== 'admin')) {
       return NextResponse.json({ error: '权限不足' }, { status: 403 });
     }
 
@@ -40,9 +40,9 @@ export async function PATCH(request: NextRequest) {
 // 分配审稿人
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions as any);
     
-    if (!session || (session.user.role !== 'editor' && session.user.role !== 'admin')) {
+    if (!session || !(session as any).user || ((session as any).user.role !== 'editor' && (session as any).user.role !== 'admin')) {
       return NextResponse.json({ error: '权限不足' }, { status: 403 });
     }
 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       reviewerId,
       deadline,
       status: 'assigned',
-      metadata: comments ? JSON.stringify({ editorComments: comments }) : undefined
+      comments: comments || undefined
     });
 
     // 更新文章状态为审稿中

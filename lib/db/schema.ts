@@ -8,7 +8,7 @@ export const users = sqliteTable('users', {
   email: text('email').notNull().unique(),
   passwordHash: text('password_hash').notNull(),
   name: text('name'),
-  role: text('role', { enum: ['admin', 'editor', 'reviewer', 'author'] }).notNull().default('author'),
+  role: text('role').notNull().default('author'),
   image: text('image'),
   emailVerified: integer('emailVerified', { mode: 'timestamp' }),
   createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
@@ -16,7 +16,7 @@ export const users = sqliteTable('users', {
 });
 
 // 期刊栏目表
-export const categories = sqliteTable('categories', {
+export const categories: any = sqliteTable('categories', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
   slug: text('slug').notNull().unique(),
@@ -39,9 +39,7 @@ export const articles = sqliteTable('articles', {
   categoryId: text('category_id').references(() => categories.id),
   manuscriptFile: text('manuscript_file'), // 文件URL
   supplementaryFiles: text('supplementary_files'), // JSON字符串存储补充文件
-  status: text('status', { 
-    values: ['submitted', 'under_review', 'revision_requested', 'accepted', 'rejected', 'published'] 
-  }).notNull().default('submitted'),
+  status: text('status').notNull().default('submitted'),
   submissionDate: text('submission_date').notNull().default(sql`CURRENT_TIMESTAMP`),
   lastModified: text('last_modified').notNull().default(sql`CURRENT_TIMESTAMP`),
   publishedAt: text('published_at'),
@@ -55,13 +53,9 @@ export const reviews = sqliteTable('reviews', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   articleId: text('article_id').notNull().references(() => articles.id),
   reviewerId: text('reviewer_id').notNull().references(() => users.id),
-  status: text('status', { 
-    values: ['assigned', 'in_progress', 'completed', 'declined'] 
-  }).notNull().default('assigned'),
+  status: text('status').notNull().default('assigned'),
   score: integer('score'), // 1-5分
-  recommendation: text('recommendation', { 
-    values: ['accept', 'minor_revision', 'major_revision', 'reject'] 
-  }),
+  recommendation: text('recommendation'),
   comments: text('comments'), // 给作者的公开意见
   confidentialComments: text('confidential_comments'), // 给编辑的私密意见
   submittedAt: text('submitted_at'),

@@ -522,7 +522,7 @@ export default function ReviewerPage() {
                         {task.status === 'in_progress' && (
                           <Button 
                             size="sm" 
-                            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                            className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
                             onClick={() => handleStartReview(task)}
                           >
                             继续审稿
@@ -783,7 +783,7 @@ export default function ReviewerPage() {
       <SignOutModal
         isOpen={showSignOutModal}
         onClose={() => setShowSignOutModal(false)}
-        userName={session?.user?.name || session?.user?.email || undefined}
+        userName={session?.user?.name || session?.user?.email}
       />
     </div>
   );

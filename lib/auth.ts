@@ -53,14 +53,14 @@ export const authOptions = {
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.role = user.role;
         token.image = user.image;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.id = token.sub!;
         session.user.role = token.role as string;
@@ -68,7 +68,7 @@ export const authOptions = {
       }
       return session;
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
       // 如果URL是相对路径，则基于baseUrl构建完整URL
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       // 如果URL是同一个域名，则直接返回
@@ -82,7 +82,7 @@ export const authOptions = {
     signUp: '/auth/signup',
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
