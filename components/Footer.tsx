@@ -87,7 +87,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 《色彩》期刊编辑部. 保留所有权利.
+              © 2025 《色彩》期刊编辑部. 保留所有权利.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400">
               <span className="hover:text-blue-400 transition-colors duration-200 cursor-pointer">隐私政策</span>

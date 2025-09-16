@@ -87,8 +87,8 @@ export default function EditorPage() {
         correspondingAuthor: '张三 (zhangsan@example.com)',
         category: '色彩心理学',
         status: 'submitted',
-        submissionDate: '2024-01-15',
-        lastModified: '2024-01-15',
+        submissionDate: '2025-01-15',
+        lastModified: '2025-01-15',
         manuscriptFile: '/files/manuscript-1.pdf',
         needsReviewerAssignment: true,
         needsDecision: false
@@ -102,8 +102,8 @@ export default function EditorPage() {
         correspondingAuthor: '王五 (wangwu@example.com)',
         category: '色彩技术',
         status: 'under_review',
-        submissionDate: '2024-01-10',
-        lastModified: '2024-01-10',
+        submissionDate: '2025-01-10',
+        lastModified: '2025-01-10',
         manuscriptFile: '/files/manuscript-2.pdf',
         reviews: [
           {
@@ -114,8 +114,8 @@ export default function EditorPage() {
             score: 4,
             recommendation: 'minor_revision',
             comments: '文章整体质量较高，建议在实验部分增加更多数据...',
-            submittedAt: '2024-01-20',
-            deadline: '2024-01-25'
+            submittedAt: '2025-01-20',
+            deadline: '2025-01-25'
           }
         ],
         needsReviewerAssignment: false,
@@ -130,8 +130,8 @@ export default function EditorPage() {
         correspondingAuthor: '孙七 (sunqi@example.com)',
         category: '色彩文化',
         status: 'revision_requested',
-        submissionDate: '2024-01-05',
-        lastModified: '2024-01-20',
+        submissionDate: '2025-01-05',
+        lastModified: '2025-01-20',
         manuscriptFile: '/files/manuscript-3.pdf',
         reviews: [
           {
@@ -142,8 +142,8 @@ export default function EditorPage() {
             score: 3,
             recommendation: 'major_revision',
             comments: '文章需要重大修改，建议重新组织结构和补充实验数据...',
-            submittedAt: '2024-01-18',
-            deadline: '2024-01-23'
+            submittedAt: '2025-01-18',
+            deadline: '2025-01-23'
           }
         ],
         needsReviewerAssignment: false,
@@ -158,8 +158,8 @@ export default function EditorPage() {
         correspondingAuthor: '刘九 (liujiu@example.com)',
         category: '色彩技术',
         status: 'accepted',
-        submissionDate: '2024-01-01',
-        lastModified: '2024-01-18',
+        submissionDate: '2025-01-01',
+        lastModified: '2025-01-18',
         manuscriptFile: '/files/manuscript-4.pdf',
         reviews: [
           {
@@ -170,8 +170,8 @@ export default function EditorPage() {
             score: 5,
             recommendation: 'accept',
             comments: '文章质量优秀，建议直接接受发表...',
-            submittedAt: '2024-01-15',
-            deadline: '2024-01-20'
+            submittedAt: '2025-01-15',
+            deadline: '2025-01-20'
           }
         ],
         needsReviewerAssignment: false,

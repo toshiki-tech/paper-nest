@@ -65,8 +65,8 @@ export default function AdminPage() {
         role: 'author',
         institution: '北京大学',
         isActive: true,
-        createdAt: '2024-01-01',
-        lastLogin: '2024-01-22',
+        createdAt: '2025-01-01',
+        lastLogin: '2025-01-22',
         articleCount: 3
       },
       {
@@ -76,8 +76,8 @@ export default function AdminPage() {
         role: 'editor',
         institution: '清华大学',
         isActive: true,
-        createdAt: '2024-01-02',
-        lastLogin: '2024-01-21',
+        createdAt: '2025-01-02',
+        lastLogin: '2025-01-21',
         articleCount: 0
       },
       {
@@ -87,8 +87,8 @@ export default function AdminPage() {
         role: 'reviewer',
         institution: '复旦大学',
         isActive: true,
-        createdAt: '2024-01-03',
-        lastLogin: '2024-01-20',
+        createdAt: '2025-01-03',
+        lastLogin: '2025-01-20',
         reviewCount: 5
       },
       {
@@ -98,8 +98,8 @@ export default function AdminPage() {
         role: 'author',
         institution: '上海交通大学',
         isActive: false,
-        createdAt: '2024-01-04',
-        lastLogin: '2024-01-15',
+        createdAt: '2025-01-04',
+        lastLogin: '2025-01-15',
         articleCount: 1
       },
       {
@@ -109,8 +109,8 @@ export default function AdminPage() {
         role: 'admin',
         institution: '中科院',
         isActive: true,
-        createdAt: '2024-01-05',
-        lastLogin: '2024-01-22',
+        createdAt: '2025-01-05',
+        lastLogin: '2025-01-22',
         articleCount: 0,
         reviewCount: 0
       }

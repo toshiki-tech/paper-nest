@@ -61,7 +61,7 @@ export default function ArticlesPage() {
         keywords: '色彩心理学, 品牌设计, 消费者行为',
         category: 'color-psychology',
         status: 'published',
-        publishedAt: '2024-01-15',
+        publishedAt: '2025-01-15',
         views: 1250,
         downloads: 89
       },
@@ -73,7 +73,7 @@ export default function ArticlesPage() {
         keywords: '数字媒体, 色彩再现, 技术创新',
         category: 'color-technology',
         status: 'published',
-        publishedAt: '2024-01-10',
+        publishedAt: '2025-01-10',
         views: 980,
         downloads: 67
       },
@@ -85,7 +85,7 @@ export default function ArticlesPage() {
         keywords: '色彩文化, 消费者行为, 跨文化研究',
         category: 'color-culture',
         status: 'published',
-        publishedAt: '2024-01-05',
+        publishedAt: '2025-01-05',
         views: 756,
         downloads: 45
       },

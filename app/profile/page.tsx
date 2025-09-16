@@ -46,7 +46,7 @@ export default function ProfilePage() {
         role: session.user.role || 'author',
         institution: '北京大学', // 模拟数据
         bio: '专注于色彩研究领域的学者，在色彩心理学和设计应用方面有丰富经验。', // 模拟数据
-        createdAt: '2024-01-01'
+        createdAt: '2025-01-01'
       };
       setProfile(mockProfile);
       setFormData({

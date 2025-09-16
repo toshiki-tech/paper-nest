@@ -133,8 +133,8 @@ export default function SubmissionPage() {
         keywords: '色彩心理学,UI设计,用户体验',
         category: 'color-psychology',
         status: 'submitted',
-        submittedAt: '2024-01-15',
-        lastModified: '2024-01-15',
+        submittedAt: '2025-01-15',
+        lastModified: '2025-01-15',
         fileUrl: '/files/manuscript-1.pdf',
         canWithdraw: true,
         canEdit: false,
@@ -153,8 +153,8 @@ export default function SubmissionPage() {
         keywords: '机器学习,色彩搭配,算法',
         category: 'color-technology',
         status: 'under_review',
-        submittedAt: '2024-01-10',
-        lastModified: '2024-01-10',
+        submittedAt: '2025-01-10',
+        lastModified: '2025-01-10',
         fileUrl: '/files/manuscript-2.pdf',
         canWithdraw: true,
         canEdit: false,
@@ -167,14 +167,14 @@ export default function SubmissionPage() {
             score: 4,
             recommendation: 'minor_revision',
             comments: '文章整体质量较高，建议在实验部分增加更多数据，并补充相关参考文献。',
-            submittedAt: '2024-01-20',
-            deadline: '2024-01-25'
+            submittedAt: '2025-01-20',
+            deadline: '2025-01-25'
           },
           {
             id: 'rev-2',
             reviewerName: '审稿专家B',
             status: 'in_progress',
-            deadline: '2024-01-30'
+            deadline: '2025-01-30'
           }
         ],
         reviewProgress: {
@@ -191,8 +191,8 @@ export default function SubmissionPage() {
         keywords: '传统色彩,文化传承,现代设计',
         category: 'color-culture',
         status: 'revision_requested',
-        submittedAt: '2024-01-05',
-        lastModified: '2024-01-20',
+        submittedAt: '2025-01-05',
+        lastModified: '2025-01-20',
         fileUrl: '/files/manuscript-3.pdf',
         reviewComments: '文章整体质量较高，建议在实验部分增加更多数据，并补充相关参考文献。',
         canWithdraw: false,
@@ -206,8 +206,8 @@ export default function SubmissionPage() {
             score: 3,
             recommendation: 'major_revision',
             comments: '文章需要重大修改，建议重新组织结构和补充实验数据。',
-            submittedAt: '2024-01-18',
-            deadline: '2024-01-23'
+            submittedAt: '2025-01-18',
+            deadline: '2025-01-23'
           },
           {
             id: 'rev-4',
@@ -216,14 +216,14 @@ export default function SubmissionPage() {
             score: 4,
             recommendation: 'minor_revision',
             comments: '文章创新性较强，但语言表达需要润色，建议补充更多案例。',
-            submittedAt: '2024-01-19',
-            deadline: '2024-01-24'
+            submittedAt: '2025-01-19',
+            deadline: '2025-01-24'
           }
         ],
         editorDecision: {
           decision: 'revision_requested',
           comments: '根据审稿专家意见，文章需要重大修改。请作者根据审稿意见进行修改，并补充实验数据。',
-          decidedAt: '2024-01-20',
+          decidedAt: '2025-01-20',
           decidedBy: '编辑张三'
         },
         reviewProgress: {
@@ -238,7 +238,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'submitted',
             actionBy: '作者',
-            actionAt: '2024-01-05',
+            actionAt: '2025-01-05',
             description: '首次投稿',
             details: {
               fileUrl: '/files/manuscript-3-v1.pdf'
@@ -249,7 +249,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'reviewer_assigned',
             actionBy: '编辑张三',
-            actionAt: '2024-01-06',
+            actionAt: '2025-01-06',
             description: '分配审稿人：审稿专家C',
             details: {
               reviewerName: '审稿专家C'
@@ -260,7 +260,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'reviewer_assigned',
             actionBy: '编辑张三',
-            actionAt: '2024-01-07',
+            actionAt: '2025-01-07',
             description: '分配审稿人：审稿专家D',
             details: {
               reviewerName: '审稿专家D'
@@ -271,7 +271,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'review_completed',
             actionBy: '审稿专家C',
-            actionAt: '2024-01-18',
+            actionAt: '2025-01-18',
             description: '审稿专家C完成审稿',
             details: {
               decision: 'major_revision',
@@ -283,7 +283,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'review_completed',
             actionBy: '审稿专家D',
-            actionAt: '2024-01-19',
+            actionAt: '2025-01-19',
             description: '审稿专家D完成审稿',
             details: {
               decision: 'minor_revision',
@@ -295,7 +295,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'decision_made',
             actionBy: '编辑张三',
-            actionAt: '2024-01-20',
+            actionAt: '2025-01-20',
             description: '编辑做出决策：需要修改',
             details: {
               decision: 'revision_requested',
@@ -307,7 +307,7 @@ export default function SubmissionPage() {
             submissionId: 'sub-3',
             action: 'status_changed',
             actionBy: '系统',
-            actionAt: '2024-01-20',
+            actionAt: '2025-01-20',
             description: '状态变更：审稿中 → 需要修改',
             details: {
               previousStatus: 'under_review',
@@ -325,7 +325,7 @@ export default function SubmissionPage() {
             keywords: '传统色彩,文化传承,现代设计',
             category: 'color-culture',
             fileUrl: '/files/manuscript-3-v1.pdf',
-            submittedAt: '2024-01-05',
+            submittedAt: '2025-01-05',
             submittedBy: '作者',
             isCurrent: false
           },
@@ -338,7 +338,7 @@ export default function SubmissionPage() {
             keywords: '传统色彩,文化传承,现代设计,实验数据',
             category: 'color-culture',
             fileUrl: '/files/manuscript-3-v2.pdf',
-            submittedAt: '2024-01-20',
+            submittedAt: '2025-01-20',
             submittedBy: '作者',
             isCurrent: true
           }
@@ -352,7 +352,7 @@ export default function SubmissionPage() {
         category: 'color-technology',
         status: 'draft',
         submittedAt: '',
-        lastModified: '2024-01-22',
+        lastModified: '2025-01-22',
         fileUrl: '/files/manuscript-4.pdf',
         canWithdraw: false,
         canEdit: true,
@@ -371,8 +371,8 @@ export default function SubmissionPage() {
         keywords: '品牌设计,色彩心理,消费者行为',
         category: 'color-design',
         status: 'accepted',
-        submittedAt: '2024-01-01',
-        lastModified: '2024-01-18',
+        submittedAt: '2025-01-01',
+        lastModified: '2025-01-18',
         fileUrl: '/files/manuscript-5.pdf',
         canWithdraw: false,
         canEdit: false,
@@ -385,8 +385,8 @@ export default function SubmissionPage() {
             score: 5,
             recommendation: 'accept',
             comments: '文章质量优秀，技术方案实用性强，建议直接接受发表。',
-            submittedAt: '2024-01-15',
-            deadline: '2024-01-20'
+            submittedAt: '2025-01-15',
+            deadline: '2025-01-20'
           },
           {
             id: 'rev-6',
@@ -395,14 +395,14 @@ export default function SubmissionPage() {
             score: 4,
             recommendation: 'accept',
             comments: '文章内容丰富，论证充分，建议接受发表。',
-            submittedAt: '2024-01-16',
-            deadline: '2024-01-21'
+            submittedAt: '2025-01-16',
+            deadline: '2025-01-21'
           }
         ],
         editorDecision: {
           decision: 'accepted',
           comments: '经过审稿专家评审，文章质量优秀，建议接受发表。',
-          decidedAt: '2024-01-18',
+          decidedAt: '2025-01-18',
           decidedBy: '编辑李四'
         },
         reviewProgress: {
