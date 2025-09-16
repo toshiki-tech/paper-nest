@@ -68,5 +68,3 @@ npm run build
 4. 部署完成
 
 ## 参考网站
-
-本项目参考了[纺织导报网站](https://www.texleader.com.cn/)的设计理念和功能布局。
