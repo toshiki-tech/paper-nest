@@ -1,0 +1,593 @@
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import Logo from '@/components/Logo';
+import SignOutModal from '@/components/SignOutModal';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
+export default function ContactPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-purple-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* 桌面端布局 */}
+          <div className="hidden md:flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <Logo size="md" />
+              <h1 className="text-xl font-bold text-gray-900">
+                联系我们
+              </h1>
+            </div>
+            <nav className="flex space-x-8">
+              <Link href="/" className="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                首页
+              </Link>
+              <Link href="/articles" className="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                期刊文章
+              </Link>
+              <Link href="/about" className="text-gray-700 hover:text-pink-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                关于我们
+              </Link>
+              <Link href="/contact" className="text-pink-600 px-3 py-2 rounded-md text-sm font-medium">
+                联系我们
+              </Link>
+            </nav>
+            <div className="flex items-center space-x-4">
+              {session ? (
+                <>
+                  <span className="text-gray-600">
+                    欢迎，{session.user?.name || session.user?.email || '用户'}
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => router.push('/profile')}
+                    className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                  >
+                    个人资料
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowSignOutModal(true)}
+                    className="border-red-300 text-red-600 hover:bg-red-50"
+                  >
+                    退出登录
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/signin">
+                    <Button variant="outline" size="sm" className="border-pink-300 text-pink-600 hover:bg-pink-50">登录</Button>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <Button size="sm" className="bg-gradient-to-r from-pink-500 via-yellow-400 to-blue-500 hover:from-pink-600 hover:via-yellow-500 hover:to-blue-600">注册</Button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+          
+          {/* 移动端布局 */}
+          <div className="md:hidden py-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <Logo size="sm" />
+                <h1 className="text-lg font-bold text-gray-900">
+                  联系我们
+                </h1>
+              </div>
+              <div className="flex items-center space-x-2">
+                {session ? (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowSignOutModal(true)}
+                    className="border-red-300 text-red-600 hover:bg-red-50 px-2"
+                  >
+                    退出
+                  </Button>
+                ) : (
+                  <Link href="/auth/signin">
+                    <Button variant="outline" size="sm" className="border-pink-300 text-pink-600 hover:bg-pink-50 px-2">登录</Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <nav className="flex space-x-4">
+                <Link href="/" className="text-gray-700 hover:text-pink-600 text-sm">首页</Link>
+                <Link href="/articles" className="text-gray-700 hover:text-pink-600 text-sm">文章</Link>
+                <Link href="/about" className="text-gray-700 hover:text-pink-600 text-sm">关于</Link>
+              </nav>
+              {session ? (
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">
+                    欢迎，{session.user?.name || session.user?.email || '用户'}
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => router.push('/profile')}
+                    className="border-purple-300 text-purple-600 hover:bg-purple-50 px-2"
+                  >
+                    资料
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/auth/signup">
+                  <Button size="sm" className="bg-gradient-to-r from-pink-500 via-yellow-400 to-blue-500 hover:from-pink-600 hover:via-yellow-500 hover:to-blue-600 px-2">注册</Button>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        {/* 页面标题 - 科技感设计 */}
+        <div className="text-center mb-12 md:mb-20 relative">
+          {/* 背景装饰 */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-96 h-96 bg-gradient-to-r from-slate-200/20 via-purple-200/20 to-slate-200/20 rounded-full blur-3xl"></div>
+          </div>
+          
+          <div className="relative z-10">
+            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-slate-100 to-purple-50 rounded-full mb-6">
+              <span className="text-slate-600 text-sm font-medium">🎨 色彩研究</span>
+            </div>
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-700 via-purple-600 to-slate-700 bg-clip-text text-transparent mb-6 leading-tight">
+              联系我们
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              探索色彩的无限可能，与我们一起创造视觉奇迹
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+          {/* 联系信息 - 优化布局 */}
+          <div className="space-y-6">
+            {/* 编辑部地址 */}
+            <Card className="border-slate-200 hover:shadow-xl transition-all duration-500 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-lg">📍</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">编辑部地址</h3>
+                    <div className="flex items-center mt-1">
+                      <div className="w-2 h-2 bg-slate-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-slate-600 font-medium">色彩研究总部</span>
+                    </div>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gradient-to-br from-slate-50 to-gray-50 rounded-lg border border-slate-200">
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <span className="w-2 h-2 bg-slate-500 rounded-full mr-2"></span>
+                      《色彩》期刊编辑部
+                    </h4>
+                    <p className="text-gray-700 leading-relaxed">
+                      北京市海淀区中关村大街1号<br />
+                      色彩研究大厦15层<br />
+                      <span className="text-slate-600 font-medium">邮编：100000</span>
+                    </p>
+                  </div>
+                  <div className="p-4 bg-gradient-to-br from-purple-50 to-slate-50 rounded-lg border border-purple-200">
+                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                      交通指南
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      地铁4号线中关村站A出口步行5分钟<br />
+                      公交：中关村南站（多路公交可达）
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 联系方式 */}
+            <Card className="border-purple-200 hover:shadow-xl transition-all duration-500 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-lg">📞</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">联系方式</h3>
+                    <div className="flex items-center mt-1">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-purple-600 font-medium">多渠道联系</span>
+                    </div>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-3 bg-gradient-to-br from-purple-50 to-slate-50 rounded-lg border border-purple-200">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">编辑部电话</h4>
+                    <p className="text-purple-600 font-medium">010-12345678</p>
+                  </div>
+                  <div className="p-3 bg-gradient-to-br from-slate-50 to-purple-50 rounded-lg border border-slate-200">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">投稿邮箱</h4>
+                    <p className="text-slate-600 font-medium text-xs">submission@color-journal.com</p>
+                  </div>
+                  <div className="p-3 bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">编辑部邮箱</h4>
+                    <p className="text-gray-600 font-medium text-xs">editor@color-journal.com</p>
+                  </div>
+                  <div className="p-3 bg-gradient-to-br from-slate-50 to-gray-50 rounded-lg border border-slate-200">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-1">广告合作</h4>
+                    <p className="text-slate-600 font-medium text-xs">advertising@color-journal.com</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 工作时间 */}
+            <Card className="border-slate-200 hover:shadow-xl transition-all duration-500 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-10 h-10 bg-gradient-to-br from-slate-600 to-gray-700 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-lg">🕒</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">工作时间</h3>
+                    <div className="flex items-center mt-1">
+                      <div className="w-2 h-2 bg-slate-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-slate-600 font-medium">服务时间</span>
+                    </div>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg border border-slate-200">
+                    <span className="text-gray-700 font-medium">周一至周五</span>
+                    <span className="font-bold text-slate-600">9:00 - 18:00</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-purple-50 to-slate-50 rounded-lg border border-purple-200">
+                    <span className="text-gray-700 font-medium">周六</span>
+                    <span className="font-bold text-purple-600">9:00 - 12:00</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200">
+                    <span className="text-gray-700 font-medium">周日及法定节假日</span>
+                    <span className="font-bold text-gray-600">休息</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* 联系表单 */}
+          <div>
+            <Card className="border-purple-200 hover:shadow-xl transition-all duration-500 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-6">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-lg">✉️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900">发送消息</h3>
+                    <div className="flex items-center mt-1">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                      <span className="text-sm text-purple-600 font-medium">在线沟通</span>
+                    </div>
+                  </div>
+                </CardTitle>
+                <CardDescription className="text-gray-600 mt-2">
+                  请填写以下表单，我们会尽快回复您
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                        姓名 *
+                      </label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="请输入您的姓名"
+                        className="border-purple-300 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                        邮箱 *
+                      </label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="请输入您的邮箱"
+                        className="border-purple-300 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                      电话
+                    </label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="请输入您的电话"
+                      className="border-slate-300 focus:ring-slate-500 focus:border-slate-500 transition-all duration-200"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
+                      主题 *
+                    </label>
+                    <Input
+                      id="subject"
+                      type="text"
+                      placeholder="请输入消息主题"
+                      className="border-slate-300 focus:ring-slate-500 focus:border-slate-500 transition-all duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                      消息内容 *
+                    </label>
+                    <Textarea
+                      id="message"
+                      placeholder="请详细描述您的问题或建议..."
+                      className="border-purple-300 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                      rows={6}
+                      required
+                    />
+                  </div>
+
+                  <div className="pt-4">
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-gradient-to-r from-purple-600 to-slate-600 hover:from-purple-700 hover:to-slate-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    >
+                      <span className="mr-2">🚀</span>
+                      发送消息
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* 快速联系卡片 */}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Card className="border-slate-200 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-slate-50 to-gray-50 group">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-slate-600 to-gray-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-xl">💬</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">在线客服</h4>
+                  <p className="text-sm text-gray-600 mb-3">工作日 9:00-18:00</p>
+                  <Button size="sm" className="bg-slate-600 hover:bg-slate-700 text-white">
+                    立即咨询
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-purple-200 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-slate-50 group">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-xl">📧</span>
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-2">邮件咨询</h4>
+                  <p className="text-sm text-gray-600 mb-3">24小时内回复</p>
+                  <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
+                    发送邮件
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        {/* 常见问题 - 科技感设计 */}
+        <section className="mt-16 md:mt-24">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-slate-100 to-purple-50 rounded-full mb-6">
+              <span className="text-slate-600 text-sm font-medium">❓ 常见问题</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-700 to-purple-600 bg-clip-text text-transparent mb-4">
+              常见问题解答
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              快速找到您需要的答案，如果还有疑问，欢迎随时联系我们
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-slate-200 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-sm">📝</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">如何投稿？</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  请访问我们的投稿页面，注册账户后即可在线投稿。投稿前请仔细阅读投稿指南，确保文章符合期刊要求。
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-purple-200 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-sm">⏱️</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">审稿周期多长？</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  一般情况下，初审需要1-2周，外审需要4-6周，终审需要1-2周。整个审稿周期约为2-3个月。
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-sm">📚</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">如何订阅期刊？</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  您可以通过我们的网站订阅电子版期刊，或联系编辑部订阅纸质版期刊。订阅费用请咨询编辑部。
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-purple-200 hover:shadow-lg transition-all duration-300 bg-white/80 backdrop-blur-sm group">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center text-lg">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-sm">👥</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">如何成为审稿人？</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700 leading-relaxed">
+                  如果您是色彩研究领域的专家，欢迎联系我们申请成为审稿人。请发送您的简历和研究领域到编辑部邮箱。
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer - 科技感设计 */}
+      <footer className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-16 mt-20 relative overflow-hidden">
+        {/* 背景装饰 */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-slate-500/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-slate-500/10 to-purple-500/10 rounded-full blur-xl"></div>
+          </div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-4">
+                <Logo size="sm" showText={false} />
+                <h3 className="text-xl font-bold bg-gradient-to-r from-slate-400 to-purple-400 bg-clip-text text-transparent">
+                  《色彩》期刊
+                </h3>
+              </div>
+              <p className="text-gray-300 leading-relaxed">
+                专业的色彩研究期刊，致力于推动色彩学科的发展与创新。
+              </p>
+              <div className="flex space-x-4 mt-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">📧</span>
+                </div>
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">📱</span>
+                </div>
+                <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">🌐</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4 text-white">快速链接</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><Link href="/articles" className="hover:text-purple-400 transition-colors duration-200">期刊文章</Link></li>
+                <li><Link href="/about" className="hover:text-purple-400 transition-colors duration-200">关于我们</Link></li>
+                <li><Link href="/contact" className="hover:text-purple-400 transition-colors duration-200">联系我们</Link></li>
+                <li><Link href="/help" className="hover:text-purple-400 transition-colors duration-200">帮助中心</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4 text-white">投稿指南</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li><Link href="/submission-guide" className="hover:text-slate-400 transition-colors duration-200">投稿须知</Link></li>
+                <li><Link href="/review-process" className="hover:text-slate-400 transition-colors duration-200">审稿流程</Link></li>
+                <li><Link href="/publishing-policy" className="hover:text-slate-400 transition-colors duration-200">出版政策</Link></li>
+                <li><Link href="/ethics" className="hover:text-slate-400 transition-colors duration-200">学术伦理</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold mb-4 text-white">联系我们</h4>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-slate-600 to-gray-700 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✉️</span>
+                  </div>
+                  <span className="text-gray-300 text-sm">contact@color-journal.com</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-purple-600 to-purple-700 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">📞</span>
+                  </div>
+                  <span className="text-gray-300 text-sm">+86-xxx-xxxx-xxxx</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-slate-600 to-gray-700 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">📍</span>
+                  </div>
+                  <span className="text-gray-300 text-sm">中国北京市</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 bg-gradient-to-br from-gray-600 to-slate-700 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">🕒</span>
+                  </div>
+                  <span className="text-gray-300 text-sm">周一至周五 9:00-18:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-400 text-sm mb-4 md:mb-0">
+                © 2024 《色彩》期刊编辑部. 保留所有权利.
+              </p>
+              <div className="flex space-x-6 text-sm text-gray-400">
+                <span className="hover:text-purple-400 transition-colors duration-200 cursor-pointer">隐私政策</span>
+                <span className="hover:text-purple-400 transition-colors duration-200 cursor-pointer">使用条款</span>
+                <span className="hover:text-purple-400 transition-colors duration-200 cursor-pointer">Cookie政策</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      {/* 退出确认弹窗 */}
+      <SignOutModal
+        isOpen={showSignOutModal}
+        onClose={() => setShowSignOutModal(false)}
+        userName={session?.user?.name || session?.user?.email}
+      />
+    </div>
+  );
+}

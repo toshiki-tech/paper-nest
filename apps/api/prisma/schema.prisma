@@ -1,0 +1,182 @@
+// Prisma数据库模式文件
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// 全局表（所有租户共享）
+
+// 租户表
+model Tenant {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  domain      String?
+  subdomain   String?
+  logoUrl     String?
+  themeConfig String?  // SQLite不支持Json，使用String存储JSON
+  settings    String?  // SQLite不支持Json，使用String存储JSON
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 关联关系
+  admins      TenantAdmin[]
+  userTenants UserTenant[]
+  issues      Issue[]
+  categories  Category[]
+
+  @@map("tenants")
+}
+
+// 租户管理员表
+model TenantAdmin {
+  id        String   @id @default(uuid())
+  tenantId  String
+  userId    String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+
+  // 关联关系
+  tenant    Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@map("tenant_admins")
+}
+
+// 全局用户表
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  firstName     String?
+  lastName      String?
+  avatarUrl     String?
+  phone         String?
+  status        String   @default("active")
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // 关联关系
+  tenantAdmins  TenantAdmin[]
+  userTenants   UserTenant[]
+  submissions   Submission[]
+  reviews       Review[]
+
+  @@map("users")
+}
+
+// 用户租户关联表
+model UserTenant {
+  id          String   @id @default(uuid())
+  userId      String
+  tenantId    String
+  role        String
+  permissions String?  // SQLite不支持Json，使用String存储JSON
+  status      String   @default("active")
+  joinedAt    DateTime @default(now())
+
+  // 关联关系
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant      Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId])
+  @@map("user_tenants")
+}
+
+// 租户特定数据（每个租户独立Schema）
+// 这些模型将在运行时动态创建到租户特定的schema中
+
+// 稿件表
+model Submission {
+  id                    String   @id @default(uuid())
+  title                 String
+  abstract              String?
+  keywords              String   // SQLite不支持String[]，使用String存储JSON
+  authors               String   // SQLite不支持Json，使用String存储JSON
+  correspondingAuthorId String
+  categoryId            String?
+  manuscriptFileUrl     String?
+  supplementaryFiles    String?  // SQLite不支持Json，使用String存储JSON
+  status                String   @default("submitted")
+  submissionDate        DateTime @default(now())
+  lastModified          DateTime @default(now())
+  metadata              String?  // SQLite不支持Json，使用String存储JSON
+
+  // 关联关系
+  correspondingAuthor   User      @relation(fields: [correspondingAuthorId], references: [id])
+  category             Category? @relation(fields: [categoryId], references: [id])
+  reviews              Review[]
+  issue                Issue?    @relation(fields: [issueId], references: [id])
+  issueId              String?
+
+  @@map("submissions")
+}
+
+// 审稿表
+model Review {
+  id                   String   @id @default(uuid())
+  submissionId         String
+  reviewerId           String
+  reviewType           String   @default("peer_review")
+  status               String   @default("assigned")
+  score                Int?
+  recommendation       String?
+  comments             String?
+  confidentialComments String?
+  submittedAt          DateTime?
+  deadline             DateTime?
+  createdAt            DateTime @default(now())
+
+  // 关联关系
+  submission           Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewer             User       @relation(fields: [reviewerId], references: [id])
+
+  @@map("reviews")
+}
+
+// 期刊期次表
+model Issue {
+  id              String    @id @default(uuid())
+  volume          Int
+  issueNumber     Int
+  title           String?
+  publicationDate DateTime?
+  status          String    @default("planning")
+  coverImageUrl   String?
+  createdAt       DateTime  @default(now())
+
+  // 关联关系
+  tenant          Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId        String
+  submissions     Submission[]
+
+  @@unique([tenantId, volume, issueNumber])
+  @@map("issues")
+}
+
+// 栏目分类表
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  parentId    String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  // 关联关系
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId    String
+  parent      Category?     @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[]    @relation("CategoryHierarchy")
+  submissions Submission[]
+
+  @@map("categories")
+}
