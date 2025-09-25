@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
+import SimpleFooter from '@/components/SimpleFooter';
 
 interface Article {
   id: string;
@@ -1108,6 +1109,9 @@ export default function EditorPage() {
           </div>
         )}
       </main>
+      
+      {/* Footer */}
+      <SimpleFooter />
       
       {/* 退出确认弹窗 */}
       <SignOutModal

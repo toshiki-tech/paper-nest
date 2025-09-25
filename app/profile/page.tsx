@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
+import SimpleFooter from '@/components/SimpleFooter';
 
 interface UserProfile {
   id: string;
@@ -215,7 +216,7 @@ export default function ProfilePage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 左侧：基本信息卡片 */}
           <div className="lg:col-span-1">
@@ -420,6 +421,9 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
+      
+      {/* Footer */}
+      <SimpleFooter />
       
       {/* 退出确认弹窗 */}
       <SignOutModal

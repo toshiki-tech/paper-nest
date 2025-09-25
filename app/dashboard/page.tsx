@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Logo from '@/components/Logo';
+import SimpleFooter from '@/components/SimpleFooter';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -289,17 +290,7 @@ export default function DashboardPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <Logo size="sm" showText={false} />
-            <h3 className="text-lg font-semibold">《色彩》期刊管理系统</h3>
-          </div>
-          <p className="text-gray-400 text-sm">
-            &copy; 2024 《色彩》期刊. 保留所有权利.
-          </p>
-        </div>
-      </footer>
+      <SimpleFooter />
     </div>
   );
 }

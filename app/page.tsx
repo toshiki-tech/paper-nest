@@ -21,9 +21,6 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="flex justify-center mb-8">
-            <Logo size="lg" showText={true} className="text-white" />
-          </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-pink-200 via-yellow-200 to-blue-200 bg-clip-text text-transparent">
             《色彩》期刊
           </h1>
