@@ -347,7 +347,7 @@ export default function AboutPage() {
                     <li><strong>期刊名称：</strong>《色彩》</li>
                     <li><strong>英文名称：</strong>Colour Journal</li>
                     <li><strong>创刊时间：</strong>2020年</li>
-                    <li><strong>出版周期：</strong>季刊</li>
+                    <li><strong>出版周期：</strong>月刊</li>
                     <li><strong>ISSN：</strong>1003-3025</li>
                     <li><strong>CN：</strong>11-1714/TS</li>
                   </ul>

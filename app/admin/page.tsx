@@ -35,6 +35,29 @@ interface UserForm {
   institution: string;
 }
 
+interface Statistics {
+  overview: {
+    totalArticles: number;
+    totalReviews: number;
+    completedReviews: number;
+    pendingReviews: number;
+    declinedReviews: number;
+    avgReviewTime: number;
+  };
+  articlesByStatus: Array<{ status: string; count: number }>;
+  articlesByCategory: Array<{ categoryName: string; count: number }>;
+  recommendationStats: Array<{ recommendation: string; count: number }>;
+  reviewRoundStats: Array<{ reviewRound: number; count: number }>;
+  reviewerWorkload: Array<{
+    reviewerName: string;
+    reviewerEmail: string;
+    totalReviews: number;
+    completedReviews: number;
+    pendingReviews: number;
+  }>;
+  monthlyTrends: Array<{ month: string; count: number }>;
+}
+
 export default function AdminPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -46,6 +69,13 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState('users');
+  const [statistics, setStatistics] = useState<Statistics | null>(null);
+  const [exportLoading, setExportLoading] = useState(false);
+  const [exportDateRange, setExportDateRange] = useState({
+    startDate: '',
+    endDate: ''
+  });
   
   // 用户表单
   const [userForm, setUserForm] = useState<UserForm>({
@@ -117,6 +147,85 @@ export default function AdminPage() {
       }
     ]);
   }, []);
+
+  // 获取统计数据
+  const fetchStatistics = async () => {
+    try {
+      const response = await fetch('/api/admin/statistics', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('统计数据:', data);
+        setStatistics(data.data);
+      } else {
+        const errorData = await response.json();
+        console.error('获取统计数据失败:', errorData);
+        alert('获取统计数据失败: ' + (errorData.error || '未知错误'));
+      }
+    } catch (error) {
+      console.error('获取统计数据失败:', error);
+      alert('获取统计数据失败，请检查网络连接');
+    }
+  };
+
+  // 导出审稿记录
+  const handleExport = async (format: 'json' | 'csv') => {
+    setExportLoading(true);
+    try {
+      const params = new URLSearchParams({
+        format,
+        ...(exportDateRange.startDate && { startDate: exportDateRange.startDate }),
+        ...(exportDateRange.endDate && { endDate: exportDateRange.endDate })
+      });
+
+      const response = await fetch(`/api/admin/export?${params}`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (format === 'csv') {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `审稿记录_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        const data = await response.json();
+        const blob = new Blob([JSON.stringify(data.data, null, 2)], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `审稿记录_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      
+      alert('导出成功！');
+    } catch (error) {
+      console.error('导出失败:', error);
+      alert('导出失败，请重试');
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'statistics') {
+      fetchStatistics();
+    }
+  }, [activeTab]);
 
   const getRoleText = (role: string) => {
     switch (role) {
@@ -360,17 +469,57 @@ export default function AdminPage() {
           </Card>
         </div>
 
-        {/* 用户管理 */}
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-gray-900">用户管理</h2>
-            <Button 
-              onClick={handleCreateUser}
-              className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+        {/* 标签页切换 */}
+        <div className="mb-8">
+          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+            <Button
+              variant="ghost"
+              onClick={() => setActiveTab('users')}
+              className={`px-6 py-2 rounded-md transition-all duration-200 ${
+                activeTab === 'users' 
+                  ? 'bg-white text-purple-600 shadow-sm font-medium' 
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+              }`}
             >
-              创建用户
+              用户管理
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setActiveTab('statistics')}
+              className={`px-6 py-2 rounded-md transition-all duration-200 ${
+                activeTab === 'statistics' 
+                  ? 'bg-white text-blue-600 shadow-sm font-medium' 
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              数据统计
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setActiveTab('export')}
+              className={`px-6 py-2 rounded-md transition-all duration-200 ${
+                activeTab === 'export' 
+                  ? 'bg-white text-green-600 shadow-sm font-medium' 
+                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              导出记录
             </Button>
           </div>
+        </div>
+
+        {/* 用户管理 */}
+        {activeTab === 'users' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">用户管理</h2>
+              <Button 
+                onClick={handleCreateUser}
+                className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+              >
+                创建用户
+              </Button>
+            </div>
 
           {/* 搜索和过滤 */}
           <Card className="border-purple-200">
@@ -467,6 +616,208 @@ export default function AdminPage() {
             ))}
           </div>
         </div>
+        )}
+
+        {/* 数据统计 */}
+        {activeTab === 'statistics' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">数据统计</h2>
+            
+            {!statistics ? (
+              <Card className="border-purple-200">
+                <CardContent className="p-8 text-center">
+                  <div className="text-gray-400 mb-4">
+                    <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    正在加载统计数据...
+                  </h3>
+                  <p className="text-gray-500">
+                    请稍候，正在获取最新的统计数据
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <>
+                {/* 概览统计 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  <Card className="border-blue-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-blue-600 mb-1">
+                        {statistics.overview.totalArticles}
+                      </div>
+                      <div className="text-sm text-gray-600">总文章数</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-green-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-green-600 mb-1">
+                        {statistics.overview.completedReviews}
+                      </div>
+                      <div className="text-sm text-gray-600">已完成审稿</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-yellow-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-yellow-600 mb-1">
+                        {statistics.overview.pendingReviews}
+                      </div>
+                      <div className="text-sm text-gray-600">待审稿</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-red-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-red-600 mb-1">
+                        {statistics.overview.declinedReviews}
+                      </div>
+                      <div className="text-sm text-gray-600">拒绝审稿</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-purple-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-purple-600 mb-1">
+                        {statistics.overview.avgReviewTime}
+                      </div>
+                      <div className="text-sm text-gray-600">平均审稿天数</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-indigo-200">
+                    <CardContent className="p-4 text-center">
+                      <div className="text-2xl font-bold text-indigo-600 mb-1">
+                        {statistics.overview.totalReviews}
+                      </div>
+                      <div className="text-sm text-gray-600">总审稿数</div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* 文章状态统计 */}
+                <Card className="border-purple-200">
+                  <CardHeader>
+                    <CardTitle>文章状态分布</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {statistics.articlesByStatus.map((item) => (
+                        <div key={item.status} className="text-center p-4 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-semibold text-gray-900">{item.count}</div>
+                          <div className="text-sm text-gray-600">{item.status}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* 审稿推荐意见统计 */}
+                <Card className="border-purple-200">
+                  <CardHeader>
+                    <CardTitle>审稿推荐意见分布</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {statistics.recommendationStats.map((item) => (
+                        <div key={item.recommendation} className="text-center p-4 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-semibold text-gray-900">{item.count}</div>
+                          <div className="text-sm text-gray-600">{item.recommendation}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* 审稿人工作量统计 */}
+                <Card className="border-purple-200">
+                  <CardHeader>
+                    <CardTitle>审稿人工作量统计</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {statistics.reviewerWorkload.map((reviewer) => (
+                        <div key={reviewer.reviewerEmail} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                          <div>
+                            <div className="font-semibold text-gray-900">{reviewer.reviewerName}</div>
+                            <div className="text-sm text-gray-600">{reviewer.reviewerEmail}</div>
+                          </div>
+                          <div className="flex space-x-4 text-sm">
+                            <span className="text-blue-600">总计: {reviewer.totalReviews}</span>
+                            <span className="text-green-600">已完成: {reviewer.completedReviews}</span>
+                            <span className="text-yellow-600">进行中: {reviewer.pendingReviews}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* 导出记录 */}
+        {activeTab === 'export' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">导出审稿记录</h2>
+            
+            <Card className="border-green-200">
+              <CardHeader>
+                <CardTitle>导出设置</CardTitle>
+                <CardDescription>
+                  导出审稿记录用于新闻出版署审查，支持JSON和CSV格式
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="startDate" className="text-gray-700">开始日期</Label>
+                    <Input
+                      id="startDate"
+                      type="date"
+                      value={exportDateRange.startDate}
+                      onChange={(e) => setExportDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+                      className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="endDate" className="text-gray-700">结束日期</Label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={exportDateRange.endDate}
+                      onChange={(e) => setExportDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+                      className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex space-x-4">
+                  <Button 
+                    onClick={() => handleExport('csv')}
+                    disabled={exportLoading}
+                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+                  >
+                    {exportLoading ? '导出中...' : '导出CSV'}
+                  </Button>
+                  <Button 
+                    onClick={() => handleExport('json')}
+                    disabled={exportLoading}
+                    variant="outline"
+                    className="border-green-300 text-green-600 hover:bg-green-50"
+                  >
+                    {exportLoading ? '导出中...' : '导出JSON'}
+                  </Button>
+                </div>
+                
+                <div className="text-sm text-gray-600">
+                  <p>• CSV格式：适合Excel打开，包含所有审稿记录</p>
+                  <p>• JSON格式：包含完整的数据结构，适合程序处理</p>
+                  <p>• 不设置日期范围将导出所有记录</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* 创建/编辑用户模态框 */}
         {(showCreateModal || showUserModal) && (

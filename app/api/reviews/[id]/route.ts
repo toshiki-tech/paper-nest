@@ -1,9 +1,75 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { reviews, reviewHistory } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { reviews, reviewHistory, articles, users } from '@/lib/db/schema';
+import { eq, and, desc } from 'drizzle-orm';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+
+// 处理下一轮审稿分配
+async function handleNextReviewRound(articleId: string, nextRound: number) {
+  try {
+    // 获取所有审稿人
+    const allReviewers = await db
+      .select()
+      .from(users)
+      .where(eq(users.role, 'reviewer'));
+
+    // 获取已分配过此文章的审稿人
+    const assignedReviewers = await db
+      .select({ reviewerId: reviews.reviewerId })
+      .from(reviews)
+      .where(eq(reviews.articleId, articleId));
+
+    const assignedReviewerIds = assignedReviewers.map(r => r.reviewerId);
+
+    // 找到未分配过的审稿人
+    const availableReviewers = allReviewers.filter(
+      reviewer => !assignedReviewerIds.includes(reviewer.id)
+    );
+
+    if (availableReviewers.length > 0) {
+      // 随机选择一个审稿人
+      const selectedReviewer = availableReviewers[Math.floor(Math.random() * availableReviewers.length)];
+      
+      // 创建新的审稿记录
+      const newReview = await db.insert(reviews).values({
+        articleId,
+        reviewerId: selectedReviewer.id,
+        reviewRound: nextRound,
+        status: 'assigned',
+        deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString() // 14天后截止
+      }).returning();
+
+      // 记录审稿历史
+      await db.insert(reviewHistory).values({
+        articleId,
+        reviewerId: selectedReviewer.id,
+        action: 'auto_assigned_next_round',
+        comments: `自动分配第${nextRound}轮审稿给 ${selectedReviewer.name || selectedReviewer.email}`,
+        metadata: JSON.stringify({
+          reviewRound: nextRound,
+          autoAssigned: true
+        })
+      });
+
+      console.log(`第${nextRound}轮审稿已自动分配给: ${selectedReviewer.name || selectedReviewer.email}`);
+    } else {
+      // 如果没有可用的审稿人，记录日志
+      await db.insert(reviewHistory).values({
+        articleId,
+        reviewerId: '', // 空字符串表示系统操作
+        action: 'no_available_reviewers',
+        comments: `第${nextRound}轮审稿：没有可用的审稿人`,
+        metadata: JSON.stringify({
+          reviewRound: nextRound,
+          error: 'no_available_reviewers'
+        })
+      });
+    }
+  } catch (error) {
+    console.error('处理下一轮审稿失败:', error);
+  }
+}
 
 // 提交审稿意见
 export async function POST(request: NextRequest) {
@@ -50,9 +116,15 @@ export async function POST(request: NextRequest) {
           score: parseInt(score),
           recommendation,
           comments,
-          confidentialComments
+          confidentialComments,
+          reviewRound: review[0].reviewRound
         })
       });
+
+      // 三审制逻辑：如果当前审稿通过且不是最后一轮，自动分配给下一个审稿人
+      if (recommendation === 'accept' && review[0].reviewRound < 3) {
+        await handleNextReviewRound(review[0].articleId, review[0].reviewRound + 1);
+      }
     }
 
     return NextResponse.json({ success: true, message: '审稿意见提交成功' });

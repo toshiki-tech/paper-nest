@@ -125,6 +125,7 @@ export interface Review {
   id: string;
   articleId: string;
   reviewerId: string;
+  reviewRound: number; // 审稿轮次：1, 2, 3
   status: ReviewStatus;
   score?: number;
   recommendation?: ReviewRecommendation;

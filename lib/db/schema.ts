@@ -53,6 +53,7 @@ export const reviews = sqliteTable('reviews', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   articleId: text('article_id').notNull().references(() => articles.id),
   reviewerId: text('reviewer_id').notNull().references(() => users.id),
+  reviewRound: integer('review_round').notNull().default(1), // 审稿轮次：1, 2, 3
   status: text('status').notNull().default('assigned'),
   score: integer('score'), // 1-5分
   recommendation: text('recommendation'),

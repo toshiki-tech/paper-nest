@@ -158,12 +158,13 @@ export default function ReviewerPage() {
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status: string, reviewRound?: number) => {
+    const roundText = reviewRound ? `第${reviewRound}轮` : '';
     switch (status) {
-      case 'assigned': return '待审稿';
-      case 'in_progress': return '审稿中';
-      case 'completed': return '已完成';
-      case 'declined': return '已拒绝';
+      case 'assigned': return `${roundText}待审稿`;
+      case 'in_progress': return `${roundText}审稿中`;
+      case 'completed': return `${roundText}已完成`;
+      case 'declined': return `${roundText}已拒绝`;
       default: return '未知状态';
     }
   };
@@ -493,8 +494,11 @@ export default function ReviewerPage() {
                           )}
                         </div>
                         <div className="flex flex-col items-end space-y-2">
+                          <Badge className="bg-indigo-100 text-indigo-800">
+                            第{task.reviewRound || 1}轮
+                          </Badge>
                           <Badge className={getStatusColor(task.status)}>
-                            {getStatusText(task.status)}
+                            {getStatusText(task.status, task.reviewRound)}
                           </Badge>
                         </div>
                       </div>
@@ -607,8 +611,11 @@ export default function ReviewerPage() {
                           )}
                         </div>
                         <div className="flex flex-col items-end space-y-2">
+                          <Badge className="bg-indigo-100 text-indigo-800">
+                            第{task.reviewRound || 1}轮
+                          </Badge>
                           <Badge className={getStatusColor(task.status)}>
-                            {getStatusText(task.status)}
+                            {getStatusText(task.status, task.reviewRound)}
                           </Badge>
                         </div>
                       </div>

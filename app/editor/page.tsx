@@ -249,12 +249,13 @@ export default function EditorPage() {
     }
   };
 
-  const getReviewStatusText = (status: string) => {
+  const getReviewStatusText = (status: string, reviewRound?: number) => {
+    const roundText = reviewRound ? `第${reviewRound}轮` : '';
     switch (status) {
-      case 'assigned': return '已分配';
-      case 'in_progress': return '审稿中';
-      case 'completed': return '已完成';
-      case 'declined': return '已拒绝';
+      case 'assigned': return `${roundText}已分配`;
+      case 'in_progress': return `${roundText}审稿中`;
+      case 'completed': return `${roundText}已完成`;
+      case 'declined': return `${roundText}已拒绝`;
       default: return '未知状态';
     }
   };
@@ -634,6 +635,9 @@ export default function EditorPage() {
                             {article.reviews.map((review) => (
                               <div key={review.id} className="flex items-center space-x-4 text-sm">
                                 <span className="text-gray-600">{review.reviewerName}</span>
+                                <Badge className="bg-indigo-100 text-indigo-800">
+                                  第{review.reviewRound || 1}轮
+                                </Badge>
                                 <Badge className={getRecommendationColor(review.recommendation || '')}>
                                   {getRecommendationText(review.recommendation || '')}
                                 </Badge>
