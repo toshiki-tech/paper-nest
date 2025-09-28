@@ -18,7 +18,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-warm-50 via-cool-100 to-cool-50">
       {/* Header - 使用公共组件 */}
-      <Header />
+      <Header onSignOutClick={() => setShowSignOutModal(true)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* 页面标题 */}

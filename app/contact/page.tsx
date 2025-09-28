@@ -20,7 +20,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
       {/* Header - 使用公共组件 */}
-      <Header />
+      <Header onSignOutClick={() => setShowSignOutModal(true)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
         {/* 页面标题 - 科技感设计 */}
