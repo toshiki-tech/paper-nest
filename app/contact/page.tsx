@@ -23,17 +23,6 @@ export default function ContactPage() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        {/* 面包屑导航 */}
-        <nav className="mb-8">
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-blue-500 transition-colors duration-200">
-              首页
-            </Link>
-            <span className="text-gray-300">/</span>
-            <span className="text-blue-600 font-medium">联系我们</span>
-          </div>
-        </nav>
-
         {/* 页面标题 - 科技感设计 */}
         <div className="text-center mb-12 md:mb-20 relative">
           {/* 背景装饰 */}

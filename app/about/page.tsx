@@ -21,17 +21,6 @@ export default function AboutPage() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* 面包屑导航 */}
-        <nav className="mb-8">
-          <div className="flex items-center space-x-2 text-sm text-cool-500">
-            <Link href="/" className="hover:text-primary-600 transition-colors duration-200">
-              首页
-            </Link>
-            <span className="text-cool-300">/</span>
-            <span className="text-primary-600 font-medium">关于我们</span>
-          </div>
-        </nav>
-
         {/* 页面标题 */}
         <div className="text-center mb-16 relative">
           {/* 背景装饰 */}
