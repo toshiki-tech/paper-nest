@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
 import SimpleFooter from '@/components/SimpleFooter';
+import { getArticleStatusText, getRecommendationText, getReviewStatusText } from '@/lib/translations';
 
 interface Article {
   id: string;
@@ -229,16 +230,6 @@ export default function EditorPage() {
     }
   };
 
-  const getRecommendationText = (recommendation: string) => {
-    switch (recommendation) {
-      case 'accept': return '接受';
-      case 'minor_revision': return '小修';
-      case 'major_revision': return '大修';
-      case 'reject': return '拒绝';
-      default: return '未评价';
-    }
-  };
-
   const getRecommendationColor = (recommendation: string) => {
     switch (recommendation) {
       case 'accept': return 'bg-green-100 text-green-800';
@@ -246,17 +237,6 @@ export default function EditorPage() {
       case 'major_revision': return 'bg-orange-100 text-orange-800';
       case 'reject': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getReviewStatusText = (status: string, reviewRound?: number) => {
-    const roundText = reviewRound ? `第${reviewRound}轮` : '';
-    switch (status) {
-      case 'assigned': return `${roundText}已分配`;
-      case 'in_progress': return `${roundText}审稿中`;
-      case 'completed': return `${roundText}已完成`;
-      case 'declined': return `${roundText}已拒绝`;
-      default: return '未知状态';
     }
   };
 

@@ -14,7 +14,7 @@ export default function Footer() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
+          <div className="md:col-span-1">
             <div className="flex items-center space-x-3 mb-4">
               <Logo size="sm" showText={false} />
               <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -42,7 +42,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div>
+          <div className="text-center md:col-span-1">
             <h4 className="text-lg font-semibold mb-4 text-white">快速链接</h4>
             <ul className="space-y-2 text-gray-300">
               <li><Link href="/articles" className="hover:text-slate-300 transition-colors duration-200">期刊文章</Link></li>
@@ -51,7 +51,7 @@ export default function Footer() {
               <li><Link href="/help" className="hover:text-slate-300 transition-colors duration-200">帮助中心</Link></li>
             </ul>
           </div>
-          <div>
+          <div className="text-center md:col-span-1">
             <h4 className="text-lg font-semibold mb-4 text-white">投稿指南</h4>
             <ul className="space-y-2 text-gray-300">
               <li><Link href="/submission-guide" className="hover:text-slate-300 transition-colors duration-200">投稿须知</Link></li>

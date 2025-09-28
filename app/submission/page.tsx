@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
 import SimpleFooter from '@/components/SimpleFooter';
+import { getArticleStatusText, getRecommendationText } from '@/lib/translations';
 
 interface Submission {
   id: string;
@@ -439,16 +440,6 @@ export default function SubmissionPage() {
       case 'published': return '已发表';
       case 'rejected': return '已拒绝';
       default: return '未知状态';
-    }
-  };
-
-  const getRecommendationText = (recommendation: string) => {
-    switch (recommendation) {
-      case 'accept': return '接受发表';
-      case 'minor_revision': return '小修后接受';
-      case 'major_revision': return '大修后重新审稿';
-      case 'reject': return '拒绝发表';
-      default: return '未评价';
     }
   };
 

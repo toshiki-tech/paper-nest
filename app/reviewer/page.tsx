@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
 import SimpleFooter from '@/components/SimpleFooter';
+import { getRecommendationText, getRecommendationColor, getReviewStatusText } from '@/lib/translations';
 
 interface ReviewTask {
   id: string;
@@ -166,26 +167,6 @@ export default function ReviewerPage() {
       case 'completed': return `${roundText}已完成`;
       case 'declined': return `${roundText}已拒绝`;
       default: return '未知状态';
-    }
-  };
-
-  const getRecommendationText = (recommendation: string) => {
-    switch (recommendation) {
-      case 'accept': return '接受';
-      case 'minor_revision': return '小修';
-      case 'major_revision': return '大修';
-      case 'reject': return '拒绝';
-      default: return '未评价';
-    }
-  };
-
-  const getRecommendationColor = (recommendation: string) => {
-    switch (recommendation) {
-      case 'accept': return 'bg-green-100 text-green-800';
-      case 'minor_revision': return 'bg-yellow-100 text-yellow-800';
-      case 'major_revision': return 'bg-orange-100 text-orange-800';
-      case 'reject': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
     }
   };
 

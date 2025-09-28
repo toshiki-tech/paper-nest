@@ -8,14 +8,17 @@ import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import SignOutModal from '@/components/SignOutModal';
 
 export default function HomePage() {
   const { data: session } = useSession();
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50">
       {/* Header - 使用公共组件 */}
-      <Header />
+      <Header onSignOutClick={() => setShowSignOutModal(true)} />
 
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white relative overflow-hidden">
@@ -182,8 +185,8 @@ export default function HomePage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm">
-                  <CardHeader className="pb-4">
+                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm flex flex-col h-full">
+                  <CardHeader className="pb-4 flex-grow">
                     <div className="flex items-center justify-between mb-2">
                       <Badge className="bg-pink-100 text-pink-800">第8卷第1期</Badge>
                       <span className="text-sm text-gray-500">2025年3月</span>
@@ -194,9 +197,7 @@ export default function HomePage() {
                     <CardDescription className="text-gray-600">
                       探讨色彩心理学原理在室内外环境设计中的实践应用
                     </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-3 mt-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <div className="w-1.5 h-1.5 bg-pink-400 rounded-full mr-3"></div>
                         <span>作者：张色彩，李设计</span>
@@ -210,7 +211,9 @@ export default function HomePage() {
                         <span>DOI：10.1234/color.2025.001</span>
                       </div>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100">
+                  </CardHeader>
+                  <CardContent className="pt-0 mt-auto">
+                    <div className="pt-4 border-t border-slate-100">
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>📊 下载量: 156次</span>
                         <span>👥 引用: 8次</span>
@@ -219,8 +222,8 @@ export default function HomePage() {
                   </CardContent>
                 </Card>
 
-                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm">
-                  <CardHeader className="pb-4">
+                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm flex flex-col h-full">
+                  <CardHeader className="pb-4 flex-grow">
                     <div className="flex items-center justify-between mb-2">
                       <Badge className="bg-purple-100 text-purple-800">第7卷第4期</Badge>
                       <span className="text-sm text-gray-500">2024年12月</span>
@@ -231,9 +234,7 @@ export default function HomePage() {
                     <CardDescription className="text-gray-600">
                       分析数字媒体环境下色彩再现的技术挑战与解决方案
                     </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-3 mt-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <div className="w-1.5 h-1.5 bg-pink-400 rounded-full mr-3"></div>
                         <span>作者：王技术，赵数字</span>
@@ -247,7 +248,9 @@ export default function HomePage() {
                         <span>DOI：10.1234/color.2024.004</span>
                       </div>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100">
+                  </CardHeader>
+                  <CardContent className="pt-0 mt-auto">
+                    <div className="pt-4 border-t border-slate-100">
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>📊 下载量: 203次</span>
                         <span>👥 引用: 12次</span>
@@ -256,8 +259,8 @@ export default function HomePage() {
                   </CardContent>
                 </Card>
 
-                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm">
-                  <CardHeader className="pb-4">
+                <Card className="group hover:shadow-xl transition-all duration-500 border-slate-200 hover:border-slate-400 bg-white/80 backdrop-blur-sm flex flex-col h-full">
+                  <CardHeader className="pb-4 flex-grow">
                     <div className="flex items-center justify-between mb-2">
                       <Badge className="bg-indigo-100 text-indigo-800">第7卷第3期</Badge>
                       <span className="text-sm text-gray-500">2024年9月</span>
@@ -268,9 +271,7 @@ export default function HomePage() {
                     <CardDescription className="text-gray-600">
                       比较不同文化背景下色彩象征意义的差异与共性
                     </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-3 mt-4">
                       <div className="flex items-center text-sm text-gray-600">
                         <div className="w-1.5 h-1.5 bg-pink-400 rounded-full mr-3"></div>
                         <span>作者：陈文化，刘比较</span>
@@ -284,7 +285,9 @@ export default function HomePage() {
                         <span>DOI：10.1234/color.2024.003</span>
                       </div>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100">
+                  </CardHeader>
+                  <CardContent className="pt-0 mt-auto">
+                    <div className="pt-4 border-t border-slate-100">
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>📊 下载量: 189次</span>
                         <span>👥 引用: 15次</span>
@@ -472,6 +475,13 @@ export default function HomePage() {
 
       {/* Footer - 使用公共组件 */}
       <Footer />
+      
+      {/* 退出确认弹窗 */}
+      <SignOutModal
+        isOpen={showSignOutModal}
+        onClose={() => setShowSignOutModal(false)}
+        userName={session?.user?.name || session?.user?.email || undefined}
+      />
     </div>
   );
 }

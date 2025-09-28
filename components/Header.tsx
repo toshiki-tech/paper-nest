@@ -5,7 +5,11 @@ import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 import { useSession } from 'next-auth/react';
 
-export default function Header() {
+interface HeaderProps {
+  onSignOutClick?: () => void;
+}
+
+export default function Header({ onSignOutClick }: HeaderProps) {
   const { data: session } = useSession();
 
   return (
@@ -59,9 +63,14 @@ export default function Header() {
                 <Link href="/profile">
                   <Button variant="outline" size="sm" className="border-warm-300 text-warm-700 hover:bg-warm-100">个人资料</Button>
                 </Link>
-                <Link href="/api/auth/signout">
-                  <Button variant="outline" size="sm" className="border-cool-300 text-cool-600 hover:bg-cool-100">退出</Button>
-                </Link>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="border-red-300 text-red-600 hover:bg-red-50"
+                  onClick={() => onSignOutClick?.()}
+                >
+                  退出登录
+                </Button>
               </>
             ) : (
               <>
@@ -109,9 +118,14 @@ export default function Header() {
                   <Link href="/profile">
                     <Button variant="outline" size="sm" className="border-warm-300 text-warm-700 hover:bg-warm-100 px-2">资料</Button>
                   </Link>
-                  <Link href="/api/auth/signout">
-                    <Button variant="outline" size="sm" className="border-cool-300 text-cool-600 hover:bg-cool-100 px-2">退出</Button>
-                  </Link>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-red-300 text-red-600 hover:bg-red-50 px-2"
+                    onClick={() => onSignOutClick?.()}
+                  >
+                    退出
+                  </Button>
                 </>
               ) : (
                 <>
@@ -148,6 +162,7 @@ export default function Header() {
           </div>
         </div>
       </div>
+      
     </header>
   );
 }

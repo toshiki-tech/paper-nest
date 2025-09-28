@@ -28,6 +28,7 @@ export default function Logo({ size = 'md', showText = true, className = '' }: L
           src="/logo.jpg"
           alt="色彩期刊Logo"
           fill
+          sizes="(max-width: 768px) 48px, (max-width: 1024px) 64px, 80px"
           className="object-contain"
           priority
         />

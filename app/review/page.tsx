@@ -9,13 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
+import { getRecommendationText } from '@/lib/translations';
 
 interface Review {
   id: string;
   articleId: string;
   articleTitle: string;
   status: 'pending' | 'completed' | 'declined';
-  recommendation?: 'accept' | 'minor_revisions' | 'major_revisions' | 'reject';
+  recommendation?: 'accept' | 'minor_revision' | 'major_revision' | 'reject';
   comments?: string;
   assignedAt: string;
   deadline?: string;
@@ -108,15 +109,6 @@ export default function ReviewPage() {
     }
   };
 
-  const getRecommendationText = (rec?: string) => {
-    switch (rec) {
-      case 'accept': return '接受';
-      case 'minor_revisions': return '小修';
-      case 'major_revisions': return '大修';
-      case 'reject': return '拒绝';
-      default: return '未评价';
-    }
-  };
 
   if (!session) {
     return <div>加载中...</div>;
@@ -256,8 +248,8 @@ export default function ReviewPage() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="accept">接受</SelectItem>
-                            <SelectItem value="minor_revisions">小修</SelectItem>
-                            <SelectItem value="major_revisions">大修</SelectItem>
+                            <SelectItem value="minor_revision">小修</SelectItem>
+                            <SelectItem value="major_revision">大修</SelectItem>
                             <SelectItem value="reject">拒绝</SelectItem>
                           </SelectContent>
                         </Select>

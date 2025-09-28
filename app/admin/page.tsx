@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
 import SimpleFooter from '@/components/SimpleFooter';
+import { getArticleStatusText, getRecommendationText, getRoleText, getRoleColor } from '@/lib/translations';
 
 interface User {
   id: string;
@@ -227,25 +228,6 @@ export default function AdminPage() {
     }
   }, [activeTab]);
 
-  const getRoleText = (role: string) => {
-    switch (role) {
-      case 'admin': return '管理员';
-      case 'editor': return '编辑';
-      case 'reviewer': return '审稿人';
-      case 'author': return '作者';
-      default: return '未知';
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'admin': return 'bg-red-100 text-red-800';
-      case 'editor': return 'bg-purple-100 text-purple-800';
-      case 'reviewer': return 'bg-blue-100 text-blue-800';
-      case 'author': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
 
   const handleCreateUser = () => {
     setUserForm({
@@ -703,7 +685,7 @@ export default function AdminPage() {
                       {statistics.articlesByStatus.map((item) => (
                         <div key={item.status} className="text-center p-4 bg-gray-50 rounded-lg">
                           <div className="text-lg font-semibold text-gray-900">{item.count}</div>
-                          <div className="text-sm text-gray-600">{item.status}</div>
+                          <div className="text-sm text-gray-600">{getArticleStatusText(item.status)}</div>
                         </div>
                       ))}
                     </div>
@@ -720,7 +702,7 @@ export default function AdminPage() {
                       {statistics.recommendationStats.map((item) => (
                         <div key={item.recommendation} className="text-center p-4 bg-gray-50 rounded-lg">
                           <div className="text-lg font-semibold text-gray-900">{item.count}</div>
-                          <div className="text-sm text-gray-600">{item.recommendation}</div>
+                          <div className="text-sm text-gray-600">{getRecommendationText(item.recommendation)}</div>
                         </div>
                       ))}
                     </div>

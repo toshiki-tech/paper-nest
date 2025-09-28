@@ -1,391 +1,282 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Logo from '@/components/Logo';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-interface Article {
-  id: string;
-  title: string;
-  abstract: string;
-  authors: string;
-  keywords: string;
-  category: string;
-  status: 'submitted' | 'under_review' | 'revisions_requested' | 'accepted' | 'published' | 'rejected';
-  publishedAt?: string;
-  views: number;
-  downloads: number;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-}
-
 export default function ArticlesPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedYear, setSelectedYear] = useState('all');
 
-  useEffect(() => {
-    // 模拟数据
-    const mockCategories: Category[] = [
-      { id: 'color-theory', name: '色彩理论', slug: 'color-theory', description: '色彩基础理论与应用研究' },
-      { id: 'color-psychology', name: '色彩心理学', slug: 'color-psychology', description: '色彩对人类心理和行为的影响研究' },
-      { id: 'color-design', name: '色彩设计', slug: 'color-design', description: '色彩在艺术设计中的应用与创新' },
-      { id: 'color-technology', name: '色彩技术', slug: 'color-technology', description: '色彩测量、再现与显示技术' },
-      { id: 'color-culture', name: '色彩文化', slug: 'color-culture', description: '色彩在不同文化中的象征意义与表达' }
-    ];
+  const categories = [
+    { value: 'all', label: '全部分类' },
+    { value: 'color-theory', label: '色彩理论' },
+    { value: 'color-psychology', label: '色彩心理学' },
+    { value: 'color-design', label: '色彩设计' },
+    { value: 'color-technology', label: '色彩技术' },
+    { value: 'color-culture', label: '色彩文化' },
+    { value: 'digital-color', label: '数字色彩' },
+    { value: 'color-medicine', label: '色彩医学' }
+  ];
 
-    const mockArticles: Article[] = [
-      {
-        id: 'art-1',
-        title: '色彩心理学在品牌设计中的应用研究',
-        abstract: '本文探讨了色彩心理学在品牌设计中的重要作用，通过实验研究分析了不同色彩对消费者心理的影响...',
-        authors: '张三, 李四',
-        keywords: '色彩心理学, 品牌设计, 消费者行为',
-        category: 'color-psychology',
-        status: 'published',
-        publishedAt: '2025-01-15',
-        views: 1250,
-        downloads: 89
-      },
-      {
-        id: 'art-2',
-        title: '数字媒体中色彩再现技术的创新与发展',
-        abstract: '随着数字媒体技术的快速发展，色彩再现技术也在不断创新。本文分析了当前主流的色彩再现技术...',
-        authors: '王五, 赵六',
-        keywords: '数字媒体, 色彩再现, 技术创新',
-        category: 'color-technology',
-        status: 'published',
-        publishedAt: '2025-01-10',
-        views: 980,
-        downloads: 67
-      },
-      {
-        id: 'art-3',
-        title: '色彩文化差异对消费者购买决策的影响',
-        abstract: '不同文化背景下的消费者对色彩的理解和偏好存在显著差异。本研究通过跨文化比较分析...',
-        authors: '孙七, 周八',
-        keywords: '色彩文化, 消费者行为, 跨文化研究',
-        category: 'color-culture',
-        status: 'published',
-        publishedAt: '2025-01-05',
-        views: 756,
-        downloads: 45
-      },
-      {
-        id: 'art-4',
-        title: '现代色彩理论在UI设计中的应用实践',
-        abstract: '用户界面设计中的色彩运用直接影响用户体验。本文结合现代色彩理论，探讨了UI设计中的色彩应用原则...',
-        authors: '吴九, 郑十',
-        keywords: '色彩理论, UI设计, 用户体验',
-        category: 'color-design',
-        status: 'published',
-        publishedAt: '2023-12-28',
-        views: 1120,
-        downloads: 78
-      },
-      {
-        id: 'art-5',
-        title: '色彩测量技术的发展历程与未来趋势',
-        abstract: '色彩测量技术是色彩科学的重要基础。本文回顾了色彩测量技术的发展历程，并展望了未来的发展趋势...',
-        authors: '钱十一, 李十二',
-        keywords: '色彩测量, 技术发展, 未来趋势',
-        category: 'color-technology',
-        status: 'published',
-        publishedAt: '2023-12-20',
-        views: 890,
-        downloads: 56
-      }
-    ];
+  const years = [
+    { value: 'all', label: '全部年份' },
+    { value: '2025', label: '2025年' },
+    { value: '2024', label: '2024年' },
+    { value: '2023', label: '2023年' },
+    { value: '2022', label: '2022年' }
+  ];
 
-    setCategories(mockCategories);
-    setArticles(mockArticles);
-  }, []);
+  const articles = [
+    {
+      id: 1,
+      title: '色彩心理学在环境设计中的应用研究',
+      authors: '张色彩, 李设计',
+      abstract: '探讨色彩心理学原理在室内外环境设计中的实践应用，通过实验研究验证不同色彩对人们心理状态和行为的影响，为环境设计提供科学依据。',
+      keywords: ['色彩心理学', '环境设计', '用户体验'],
+      category: 'color-psychology',
+      year: 2025,
+      volume: 8,
+      issue: 1,
+      pages: '1-15',
+      doi: '10.1234/color.2025.001',
+      downloadCount: 156,
+      citationCount: 8,
+      publishedAt: '2025-03-15'
+    },
+    {
+      id: 2,
+      title: '数字媒体中的色彩再现技术研究',
+      authors: '王技术, 赵数字',
+      abstract: '分析数字媒体环境下色彩再现的技术挑战与解决方案，研究不同显示设备对色彩表现的影响，提出优化色彩管理的方法。',
+      keywords: ['数字色彩', '色彩管理', '显示技术'],
+      category: 'digital-color',
+      year: 2024,
+      volume: 7,
+      issue: 4,
+      pages: '23-38',
+      doi: '10.1234/color.2024.004',
+      downloadCount: 203,
+      citationCount: 12,
+      publishedAt: '2024-12-20'
+    },
+    {
+      id: 3,
+      title: '跨文化色彩象征意义的比较研究',
+      authors: '陈文化, 刘比较',
+      abstract: '比较不同文化背景下色彩象征意义的差异与共性，探讨文化因素对色彩认知的影响，为跨文化设计提供理论指导。',
+      keywords: ['色彩文化', '象征意义', '跨文化研究'],
+      category: 'color-culture',
+      year: 2024,
+      volume: 7,
+      issue: 3,
+      pages: '45-62',
+      doi: '10.1234/color.2024.003',
+      downloadCount: 189,
+      citationCount: 15,
+      publishedAt: '2024-09-10'
+    },
+    {
+      id: 4,
+      title: '基于机器学习的色彩搭配算法',
+      authors: '李算法, 王智能',
+      abstract: '提出了一种基于机器学习的自动色彩搭配算法，能够根据设计需求自动生成和谐的色彩方案，提高设计效率。',
+      keywords: ['机器学习', '色彩搭配', '算法设计'],
+      category: 'color-technology',
+      year: 2024,
+      volume: 7,
+      issue: 2,
+      pages: '78-95',
+      doi: '10.1234/color.2024.002',
+      downloadCount: 234,
+      citationCount: 18,
+      publishedAt: '2024-06-15'
+    },
+    {
+      id: 5,
+      title: '色彩疗法在心理健康中的应用',
+      authors: '孙心理, 周健康',
+      abstract: '研究色彩疗法在心理健康治疗中的应用效果，探讨不同色彩对情绪调节和心理康复的作用机制。',
+      keywords: ['色彩疗法', '心理健康', '情绪调节'],
+      category: 'color-medicine',
+      year: 2023,
+      volume: 6,
+      issue: 4,
+      pages: '112-128',
+      doi: '10.1234/color.2023.004',
+      downloadCount: 167,
+      citationCount: 9,
+      publishedAt: '2023-12-05'
+    },
+    {
+      id: 6,
+      title: '传统色彩理论在现代设计中的传承与创新',
+      authors: '吴传统, 郑现代',
+      abstract: '分析传统色彩理论的核心价值，探讨其在现代设计中的传承方式与创新应用，为设计实践提供理论支撑。',
+      keywords: ['传统色彩', '现代设计', '传承创新'],
+      category: 'color-theory',
+      year: 2023,
+      volume: 6,
+      issue: 3,
+      pages: '89-105',
+      doi: '10.1234/color.2023.003',
+      downloadCount: 145,
+      citationCount: 7,
+      publishedAt: '2023-09-20'
+    }
+  ];
 
   const filteredArticles = articles.filter(article => {
-    const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory;
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.abstract.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.keywords.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch && article.status === 'published';
+                         article.authors.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         article.abstract.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory;
+    const matchesYear = selectedYear === 'all' || article.year.toString() === selectedYear;
+    
+    return matchesSearch && matchesCategory && matchesYear;
   });
 
-  const getCategoryName = (categoryId: string) => {
-    return categories.find(cat => cat.id === categoryId)?.name || '未知分类';
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('zh-CN');
+  const getCategoryLabel = (category: string) => {
+    const cat = categories.find(c => c.value === category);
+    return cat ? cat.label : category;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-25 via-green-25 to-blue-25">
-      {/* Header - 使用公共组件 */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50">
       <Header />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 面包屑导航 */}
-        <nav className="mb-8">
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-blue-500 transition-colors duration-200">
-              首页
-            </Link>
-            <span className="text-gray-300">/</span>
-            <span className="text-blue-600 font-medium">期刊文章</span>
-          </div>
-        </nav>
-
-        {/* 页面标题和导航 */}
-        <div className="text-center mb-12 relative">
-          {/* 背景装饰 */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-96 h-96 bg-gradient-to-r from-blue-200/20 via-green-200/20 to-blue-200/20 rounded-full blur-3xl"></div>
-          </div>
-          
-          <div className="relative z-10">
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-green-50 rounded-full mb-6">
-              <span className="text-blue-600 text-sm font-medium">📚 学术期刊</span>
-            </div>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-700 via-green-600 to-blue-700 bg-clip-text text-transparent mb-6 leading-tight">
-              期刊文章
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              探索色彩研究的学术前沿，发现最新的研究成果
-            </p>
-          </div>
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* 页面标题 */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            期刊文章
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            浏览《色彩》期刊发表的最新研究成果
+          </p>
         </div>
 
         {/* 搜索和筛选 */}
-        <Card className="mb-8 border-blue-200 hover:shadow-xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <Input
-                  placeholder="搜索文章标题、摘要或关键词..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border-blue-300 focus:ring-blue-500 focus:border-blue-500"
-                />
+        <div className="mb-12">
+          <Card>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="md:col-span-2">
+                  <Input
+                    placeholder="搜索文章标题、作者或关键词..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+                <div>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="选择分类" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Select value={selectedYear} onValueChange={setSelectedYear}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="选择年份" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year.value} value={year.value}>
+                          {year.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div className="md:w-64">
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="border-blue-300 focus:ring-blue-500 focus:border-blue-500">
-                    <SelectValue placeholder="选择分类" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">全部分类</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 统计信息 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="border-orange-200">
-            <CardContent className="p-6 text-center">
-              <div className="text-2xl font-bold text-orange-600 mb-2">{articles.length}</div>
-              <div className="text-gray-600">总文章数</div>
-            </CardContent>
-          </Card>
-          <Card className="border-orange-200">
-            <CardContent className="p-6 text-center">
-              <div className="text-2xl font-bold text-blue-600 mb-2">{categories.length}</div>
-              <div className="text-gray-600">期刊栏目</div>
-            </CardContent>
-          </Card>
-          <Card className="border-orange-200">
-            <CardContent className="p-6 text-center">
-              <div className="text-2xl font-bold text-green-600 mb-2">
-                {articles.reduce((sum, article) => sum + article.views, 0)}
-              </div>
-              <div className="text-gray-600">总浏览量</div>
-            </CardContent>
-          </Card>
-          <Card className="border-orange-200">
-            <CardContent className="p-6 text-center">
-              <div className="text-2xl font-bold text-purple-600 mb-2">
-                {articles.reduce((sum, article) => sum + article.downloads, 0)}
-              </div>
-              <div className="text-gray-600">总下载量</div>
             </CardContent>
           </Card>
         </div>
 
         {/* 文章列表 */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-900">
-              {selectedCategory === 'all' ? '全部文章' : getCategoryName(selectedCategory)}
-            </h2>
-            <Badge variant="outline" className="border-orange-300 text-orange-600">
-              共 {filteredArticles.length} 篇文章
-            </Badge>
-          </div>
-
+        <div className="space-y-8">
           {filteredArticles.length === 0 ? (
-            <Card className="border-orange-200">
-              <CardContent className="p-8 text-center">
+            <Card>
+              <CardContent className="p-12 text-center">
                 <div className="text-gray-400 mb-4">
                   <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                  暂无文章
+                  未找到相关文章
                 </h3>
                 <p className="text-gray-500">
-                  {searchTerm ? '没有找到匹配的文章' : '该分类下暂无文章'}
+                  请尝试调整搜索条件或筛选器
                 </p>
               </CardContent>
             </Card>
           ) : (
             filteredArticles.map((article) => (
-              <Card key={article.id} className="border-orange-200 hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-4 md:p-6">
-                  {/* 桌面端布局 */}
-                  <div className="hidden md:block">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border-orange-300">
-                            {getCategoryName(article.category)}
+              <Card key={article.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="text-xl text-gray-900 mb-2">
+                        {article.title}
+                      </CardTitle>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">
+                        <span>作者：{article.authors}</span>
+                        <span>•</span>
+                        <span>第{article.volume}卷第{article.issue}期</span>
+                        <span>•</span>
+                        <span>{article.year}年</span>
+                        <span>•</span>
+                        <span>第{article.pages}页</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        <Badge className="bg-blue-100 text-blue-800">
+                          {getCategoryLabel(article.category)}
+                        </Badge>
+                        {article.keywords.map((keyword, index) => (
+                          <Badge key={index} variant="outline" className="text-gray-600">
+                            {keyword}
                           </Badge>
-                          <span className="text-sm text-gray-500">
-                            发布时间: {formatDate(article.publishedAt!)}
-                          </span>
-                        </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-orange-600 cursor-pointer">
-                          {article.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-3">
-                          {article.abstract}
-                        </p>
-                        <div className="flex items-center space-x-6 text-sm text-gray-500">
-                          <span>作者: {article.authors}</span>
-                          <span>关键词: {article.keywords}</span>
-                        </div>
+                        ))}
                       </div>
                     </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-6 text-sm text-gray-500">
-                        <span className="flex items-center">
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          {article.views} 次浏览
-                        </span>
-                        <span className="flex items-center">
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                          {article.downloads} 次下载
-                        </span>
-                      </div>
-                      <div className="flex space-x-3">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="border-orange-300 text-orange-600 hover:bg-orange-50"
-                        >
-                          在线阅读
-                        </Button>
-                        <Button 
-                          size="sm"
-                          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
-                        >
-                          下载PDF
-                        </Button>
-                      </div>
+                    <div className="text-right text-sm text-gray-500">
+                      <div>下载量: {article.downloadCount}</div>
+                      <div>引用量: {article.citationCount}</div>
                     </div>
                   </div>
-
-                  {/* 移动端布局 */}
-                  <div className="md:hidden">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Badge className="bg-gradient-to-r from-orange-100 to-red-100 text-orange-800 border-orange-300 text-xs">
-                          {getCategoryName(article.category)}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {formatDate(article.publishedAt!)}
-                        </span>
-                      </div>
-                      
-                      <h3 className="text-lg font-semibold text-gray-900 hover:text-orange-600 cursor-pointer leading-tight">
-                        {article.title}
-                      </h3>
-                      
-                      <p className="text-gray-600 text-sm line-clamp-2">
-                        {article.abstract}
-                      </p>
-                      
-                      <div className="space-y-2">
-                        <div className="text-xs text-gray-500">
-                          <span className="font-medium">作者:</span> {article.authors}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          <span className="font-medium">关键词:</span> {article.keywords}
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
-                          <span className="flex items-center">
-                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            {article.views}
-                          </span>
-                          <span className="flex items-center">
-                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            {article.downloads}
-                          </span>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="border-orange-300 text-orange-600 hover:bg-orange-50 px-2 text-xs"
-                          >
-                            阅读
-                          </Button>
-                          <Button 
-                            size="sm"
-                            className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-2 text-xs"
-                          >
-                            下载
-                          </Button>
-                        </div>
-                      </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-600 mb-4 leading-relaxed">
+                    {article.abstract}
+                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-500">
+                      <span>DOI: {article.doi}</span>
+                      <span className="ml-4">发表日期: {article.publishedAt}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        查看详情
+                      </Button>
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        下载PDF
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -393,9 +284,54 @@ export default function ArticlesPage() {
             ))
           )}
         </div>
+
+        {/* 分页 */}
+        {filteredArticles.length > 0 && (
+          <div className="mt-12 flex justify-center">
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" disabled>
+                上一页
+              </Button>
+              <Button variant="outline" className="bg-blue-600 text-white">
+                1
+              </Button>
+              <Button variant="outline">
+                2
+              </Button>
+              <Button variant="outline">
+                3
+              </Button>
+              <Button variant="outline">
+                下一页
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 统计信息 */}
+        <div className="mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">期刊统计</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">156</div>
+              <div className="text-gray-600">已发表文章</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">2,847</div>
+              <div className="text-gray-600">总下载量</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">189</div>
+              <div className="text-gray-600">总引用量</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-orange-600 mb-2">25</div>
+              <div className="text-gray-600">合作机构</div>
+            </div>
+          </div>
+        </div>
       </main>
 
-      {/* Footer - 使用公共组件 */}
       <Footer />
     </div>
   );
