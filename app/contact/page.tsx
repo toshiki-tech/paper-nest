@@ -22,7 +22,7 @@ export default function ContactPage() {
       {/* Header - 使用公共组件 */}
       <Header onSignOutClick={() => setShowSignOutModal(true)} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 mt-4">
         {/* 页面标题 - 科技感设计 */}
         <div className="text-center mb-12 md:mb-20 relative">
           {/* 背景装饰 */}
