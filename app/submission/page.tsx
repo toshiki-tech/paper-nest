@@ -843,7 +843,9 @@ export default function SubmissionPage() {
               </CardContent>
             </Card>
           ) : (
-            submissions.map((submission) => (
+            submissions
+              .sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime())
+              .map((submission) => (
               <Card key={submission.id} className="border-orange-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
