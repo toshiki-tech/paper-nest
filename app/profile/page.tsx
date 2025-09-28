@@ -396,7 +396,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/editor')}
                       className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
                     >
-                      编辑工作台
+                      工作台
                     </Button>
                   )}
                   {profile.role === 'reviewer' && (
@@ -404,7 +404,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/reviewer')}
                       className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
                     >
-                      审稿工作台
+                      工作台
                     </Button>
                   )}
                   {profile.role === 'admin' && (
@@ -412,7 +412,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/admin')}
                       className="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700"
                     >
-                      用户管理
+                      工作台
                     </Button>
                   )}
                 </div>

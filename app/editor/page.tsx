@@ -365,9 +365,6 @@ export default function EditorPage() {
           <div className="hidden md:flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               <Logo size="md" />
-              <h1 className="text-xl font-bold text-gray-900">
-                编辑工作台面板
-              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">
@@ -405,9 +402,6 @@ export default function EditorPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
                 <Logo size="sm" />
-                <h1 className="text-lg font-bold text-gray-900">
-                  编辑工作台
-                </h1>
               </div>
               <div className="flex items-center space-x-2">
                 <Button 

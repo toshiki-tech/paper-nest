@@ -917,7 +917,7 @@ export default function SubmissionPage() {
           <CardContent className="p-6 text-center">
             <div className="text-red-600 text-6xl mb-4">🚫</div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">权限不足</h2>
-            <p className="text-gray-600 mb-4">您没有访问作者工作台的权限</p>
+            <p className="text-gray-600 mb-4">您没有访问权限</p>
             <Button onClick={() => router.push('/')} className="w-full">
               返回首页
             </Button>
@@ -936,9 +936,6 @@ export default function SubmissionPage() {
           <div className="hidden md:flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               <Logo size="md" />
-              <h1 className="text-xl font-bold text-gray-900">
-                作者工作台
-              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">
@@ -976,9 +973,6 @@ export default function SubmissionPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
                 <Logo size="sm" />
-                <h1 className="text-lg font-bold text-gray-900">
-                  作者工作台
-                </h1>
               </div>
               <div className="flex items-center space-x-2">
                 <Button 

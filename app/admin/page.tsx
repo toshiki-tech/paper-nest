@@ -363,7 +363,7 @@ export default function AdminPage() {
           <CardContent className="p-6 text-center">
             <div className="text-red-600 text-6xl mb-4">🚫</div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">权限不足</h2>
-            <p className="text-gray-600 mb-4">您没有访问管理员面板的权限</p>
+            <p className="text-gray-600 mb-4">您没有访问权限</p>
             <Button onClick={() => router.push('/')} className="w-full">
               返回首页
             </Button>
@@ -378,13 +378,11 @@ export default function AdminPage() {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-purple-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <Logo size="md" />
-              <h1 className="text-xl font-bold text-gray-900">
-                管理员面板
-              </h1>
-            </div>
+          {/* 桌面端布局 */}
+          <div className="hidden md:flex justify-between items-center h-16">
+              <div className="flex items-center space-x-3">
+                <Logo size="md" />
+              </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">
                 欢迎，{session.user?.name || session.user?.email || '用户'}
@@ -412,6 +410,46 @@ export default function AdminPage() {
                 className="border-purple-300 text-purple-600 hover:bg-purple-50"
               >
                 返回首页
+              </Button>
+            </div>
+          </div>
+          
+          {/* 移动端布局 */}
+          <div className="md:hidden py-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <Logo size="sm" />
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => router.push('/profile')}
+                  className="border-purple-300 text-purple-600 hover:bg-purple-50 px-2"
+                >
+                  资料
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowSignOutModal(true)}
+                  className="border-red-300 text-red-600 hover:bg-red-50 px-2"
+                >
+                  退出
+                </Button>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">
+                欢迎，{session.user?.name || session.user?.email || '用户'}
+              </span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => router.push('/')}
+                className="border-purple-300 text-purple-600 hover:bg-purple-50 px-2"
+              >
+                首页
               </Button>
             </div>
           </div>
@@ -569,8 +607,6 @@ export default function AdminPage() {
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
                         <span>注册时间: {user.createdAt}</span>
                         {user.lastLogin && <span>最后登录: {user.lastLogin}</span>}
-                        {user.articleCount !== undefined && <span>投稿数: {user.articleCount}</span>}
-                        {user.reviewCount !== undefined && <span>审稿数: {user.reviewCount}</span>}
                       </div>
                     </div>
                   </div>
@@ -672,8 +708,8 @@ export default function AdminPage() {
               </Card>
             ) : (
               <>
-                {/* 概览统计 */}
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {/* 核心统计 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Card className="border-blue-200">
                     <CardContent className="p-4 text-center">
                       <div className="text-2xl font-bold text-blue-600 mb-1">
@@ -698,30 +734,6 @@ export default function AdminPage() {
                       <div className="text-sm text-gray-600">待审稿</div>
                     </CardContent>
                   </Card>
-                  <Card className="border-red-200">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-red-600 mb-1">
-                        {statistics.overview.declinedReviews}
-                      </div>
-                      <div className="text-sm text-gray-600">拒绝审稿</div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-purple-200">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-purple-600 mb-1">
-                        {statistics.overview.avgReviewTime}
-                      </div>
-                      <div className="text-sm text-gray-600">平均审稿天数</div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-indigo-200">
-                    <CardContent className="p-4 text-center">
-                      <div className="text-2xl font-bold text-indigo-600 mb-1">
-                        {statistics.overview.totalReviews}
-                      </div>
-                      <div className="text-sm text-gray-600">总审稿数</div>
-                    </CardContent>
-                  </Card>
                 </div>
 
                 {/* 文章状态统计 */}
@@ -741,46 +753,6 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
-                {/* 审稿推荐意见统计 */}
-                <Card className="border-purple-200">
-                  <CardHeader>
-                    <CardTitle>审稿推荐意见分布</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {statistics.recommendationStats.map((item) => (
-                        <div key={item.recommendation} className="text-center p-4 bg-gray-50 rounded-lg">
-                          <div className="text-lg font-semibold text-gray-900">{item.count}</div>
-                          <div className="text-sm text-gray-600">{getRecommendationText(item.recommendation)}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* 审稿人工作量统计 */}
-                <Card className="border-purple-200">
-                  <CardHeader>
-                    <CardTitle>审稿人工作量统计</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {statistics.reviewerWorkload.map((reviewer) => (
-                        <div key={reviewer.reviewerEmail} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                          <div>
-                            <div className="font-semibold text-gray-900">{reviewer.reviewerName}</div>
-                            <div className="text-sm text-gray-600">{reviewer.reviewerEmail}</div>
-                          </div>
-                          <div className="flex space-x-4 text-sm">
-                            <span className="text-blue-600">总计: {reviewer.totalReviews}</span>
-                            <span className="text-green-600">已完成: {reviewer.completedReviews}</span>
-                            <span className="text-yellow-600">进行中: {reviewer.pendingReviews}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
               </>
             )}
           </div>

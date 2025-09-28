@@ -12,8 +12,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import SignOutModal from '@/components/SignOutModal';
-import SimpleFooter from '@/components/SimpleFooter';
-import { getRecommendationText, getRecommendationColor, getReviewStatusText } from '@/lib/translations';
 
 interface ReviewTask {
   id: string;
@@ -33,7 +31,6 @@ interface ReviewTask {
   recommendation?: 'accept' | 'minor_revision' | 'major_revision' | 'reject';
   comments?: string;
   confidentialComments?: string;
-  reviewRound?: number;
 }
 
 interface ReviewForm {
@@ -52,8 +49,6 @@ export default function ReviewerPage() {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'pending' | 'completed'>('pending');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
   
   // 审稿表单
   const [reviewForm, setReviewForm] = useState<ReviewForm>({
@@ -73,12 +68,12 @@ export default function ReviewerPage() {
         abstract: '本文探讨了色彩心理学在用户界面设计中的重要作用，通过实验验证了不同色彩对用户行为的影响。研究采用定量分析方法，对200名用户进行了色彩偏好测试，发现蓝色系色彩能够显著提升用户的信任感和专业感，而红色系色彩则更容易引起用户的注意和行动欲望。这些发现为UI设计师提供了科学的色彩选择依据。',
         authors: '张三,李四',
         category: '色彩心理学',
-        submissionDate: '2025-01-15',
-        deadline: '2025-02-15',
+        submissionDate: '2024-01-15',
+        deadline: '2024-02-15',
         status: 'assigned',
         manuscriptFile: '/files/manuscript-1.pdf',
         editorComments: '请重点关注实验设计的科学性和数据分析的准确性。',
-        assignedAt: '2025-01-16',
+        assignedAt: '2024-01-16',
         submittedAt: undefined
       },
       {
@@ -88,12 +83,12 @@ export default function ReviewerPage() {
         abstract: '提出了一种基于机器学习的自动色彩搭配算法，能够根据设计需求自动生成和谐的色彩方案。算法采用深度神经网络，通过学习大量优秀设计作品的颜色搭配规律，实现了智能化的色彩推荐。实验结果表明，该算法生成的色彩方案在美学评价和用户满意度方面均优于传统方法。',
         authors: '王五,赵六',
         category: '色彩技术',
-        submissionDate: '2025-01-10',
-        deadline: '2025-02-10',
+        submissionDate: '2024-01-10',
+        deadline: '2024-02-10',
         status: 'in_progress',
         manuscriptFile: '/files/manuscript-2.pdf',
         editorComments: '请特别关注算法的创新性和实用性。',
-        assignedAt: '2025-01-11',
+        assignedAt: '2024-01-11',
         submittedAt: undefined
       },
       {
@@ -103,13 +98,13 @@ export default function ReviewerPage() {
         abstract: '研究了中国传统色彩文化在现代设计中的传承与应用。通过分析古代文献和现代设计案例，探讨了传统色彩符号的现代意义。研究发现，传统色彩不仅具有美学价值，更承载着深厚的文化内涵，在现代设计中能够有效传达文化认同感。',
         authors: '孙七,周八',
         category: '色彩文化',
-        submissionDate: '2025-01-05',
-        deadline: '2025-02-05',
+        submissionDate: '2024-01-05',
+        deadline: '2024-02-05',
         status: 'completed',
         manuscriptFile: '/files/manuscript-3.pdf',
         editorComments: '请从文化传承的角度评价文章的价值。',
-        assignedAt: '2025-01-06',
-        submittedAt: '2025-01-20',
+        assignedAt: '2024-01-06',
+        submittedAt: '2024-01-20',
         score: 4,
         recommendation: 'minor_revision',
         comments: '文章整体质量较高，建议在实验部分增加更多数据，并补充相关参考文献。',
@@ -122,13 +117,13 @@ export default function ReviewerPage() {
         abstract: '探讨了数字媒体环境下色彩管理的关键技术和标准。分析了不同色彩空间的特点和应用场景，提出了基于ICC标准的色彩管理解决方案。通过实际案例验证了该方案的有效性。',
         authors: '刘九,陈十',
         category: '色彩技术',
-        submissionDate: '2025-01-01',
-        deadline: '2025-02-01',
+        submissionDate: '2024-01-01',
+        deadline: '2024-02-01',
         status: 'completed',
         manuscriptFile: '/files/manuscript-4.pdf',
         editorComments: '请重点关注技术方案的实用性和创新性。',
-        assignedAt: '2025-01-02',
-        submittedAt: '2025-01-18',
+        assignedAt: '2024-01-02',
+        submittedAt: '2024-01-18',
         score: 5,
         recommendation: 'accept',
         comments: '文章质量优秀，技术方案实用性强，建议直接接受发表。',
@@ -141,8 +136,8 @@ export default function ReviewerPage() {
         abstract: '分析了不同色彩在品牌设计中对消费者心理的影响。通过心理学实验和消费者调研，验证了色彩与品牌认知、情感反应之间的关系。研究结果为品牌设计师提供了科学的色彩选择指导。',
         authors: '吴十一,郑十二',
         category: '色彩设计',
-        submissionDate: '2024-12-20',
-        deadline: '2025-01-20',
+        submissionDate: '2023-12-20',
+        deadline: '2024-01-20',
         status: 'declined',
         manuscriptFile: '/files/manuscript-5.pdf',
         editorComments: '请从品牌设计角度评价文章的实用性。',
@@ -162,14 +157,33 @@ export default function ReviewerPage() {
     }
   };
 
-  const getStatusText = (status: string, reviewRound?: number) => {
-    const roundText = reviewRound ? `第${reviewRound}轮` : '';
+  const getStatusText = (status: string) => {
     switch (status) {
-      case 'assigned': return `${roundText}待审稿`;
-      case 'in_progress': return `${roundText}审稿中`;
-      case 'completed': return `${roundText}已完成`;
-      case 'declined': return `${roundText}已拒绝`;
+      case 'assigned': return '待审稿';
+      case 'in_progress': return '审稿中';
+      case 'completed': return '已完成';
+      case 'declined': return '已拒绝';
       default: return '未知状态';
+    }
+  };
+
+  const getRecommendationText = (recommendation: string) => {
+    switch (recommendation) {
+      case 'accept': return '接受';
+      case 'minor_revision': return '小修';
+      case 'major_revision': return '大修';
+      case 'reject': return '拒绝';
+      default: return '未评价';
+    }
+  };
+
+  const getRecommendationColor = (recommendation: string) => {
+    switch (recommendation) {
+      case 'accept': return 'bg-green-100 text-green-800';
+      case 'minor_revision': return 'bg-yellow-100 text-yellow-800';
+      case 'major_revision': return 'bg-orange-100 text-orange-800';
+      case 'reject': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -285,9 +299,6 @@ export default function ReviewerPage() {
           <div className="hidden md:flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               <Logo size="md" />
-              <h1 className="text-xl font-bold text-gray-900">
-                审稿人工作台
-              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">
@@ -325,9 +336,6 @@ export default function ReviewerPage() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
                 <Logo size="sm" />
-                <h1 className="text-lg font-bold text-gray-900">
-                  审稿工作台
-                </h1>
               </div>
               <div className="flex items-center space-x-2">
                 <Button 
@@ -452,47 +460,34 @@ export default function ReviewerPage() {
                   </CardContent>
                 </Card>
               ) : (
-                (() => {
-                  const totalPages = Math.ceil(pendingTasks.length / itemsPerPage);
-                  const startIndex = (currentPage - 1) * itemsPerPage;
-                  const endIndex = startIndex + itemsPerPage;
-                  const currentTasks = pendingTasks.slice(startIndex, endIndex);
-
-                  return (
-                    <>
-                      {currentTasks.map((task) => (
+                pendingTasks.map((task) => (
                   <Card key={task.id} className="border-purple-200 hover:shadow-md transition-shadow">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <div className="mb-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900 flex-1">
                             {task.title}
                           </h3>
-                          <p className="text-gray-600 text-sm mb-3 line-clamp-3">
-                            {task.abstract}
-                          </p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                            <span>作者: {task.authors}</span>
-                            <span>分类: {task.category}</span>
-                            <span>投稿时间: {task.submissionDate}</span>
-                            <span className="text-red-600">截止时间: {task.deadline}</span>
-                          </div>
-                          
-                          {task.editorComments && (
-                            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                              <h4 className="text-sm font-semibold text-blue-800 mb-1">编辑说明:</h4>
-                              <p className="text-sm text-blue-700">{task.editorComments}</p>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex flex-col items-end space-y-2">
-                          <Badge className="bg-indigo-100 text-indigo-800">
-                            第{task.reviewRound || 1}轮
-                          </Badge>
                           <Badge className={getStatusColor(task.status)}>
-                            {getStatusText(task.status, task.reviewRound)}
+                            {getStatusText(task.status)}
                           </Badge>
                         </div>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-3">
+                          {task.abstract}
+                        </p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                          <span>作者: {task.authors}</span>
+                          <span>分类: {task.category}</span>
+                          <span>投稿时间: {task.submissionDate}</span>
+                          <span className="text-red-600">截止时间: {task.deadline}</span>
+                        </div>
+                        
+                        {task.editorComments && (
+                          <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <h4 className="text-sm font-semibold text-blue-800 mb-1">编辑说明:</h4>
+                            <p className="text-sm text-blue-700">{task.editorComments}</p>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex items-center space-x-4">
@@ -519,7 +514,7 @@ export default function ReviewerPage() {
                         {task.status === 'in_progress' && (
                           <Button 
                             size="sm" 
-                            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                            className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
                             onClick={() => handleStartReview(task)}
                           >
                             继续审稿
@@ -565,51 +560,46 @@ export default function ReviewerPage() {
                 completedTasks.map((task) => (
                   <Card key={task.id} className="border-purple-200 hover:shadow-md transition-shadow">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <div className="mb-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900 flex-1">
                             {task.title}
                           </h3>
-                          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                            {task.abstract}
-                          </p>
-                          <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-                            <span>作者: {task.authors}</span>
-                            <span>分类: {task.category}</span>
-                            <span>投稿时间: {task.submissionDate}</span>
-                            <span>审稿完成: {task.submittedAt}</span>
-                          </div>
-                          
-                          {task.status === 'completed' && (
-                            <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                              <div className="flex items-center space-x-4 mb-2">
-                                <Badge className={getRecommendationColor(task.recommendation || '')}>
-                                  {getRecommendationText(task.recommendation || '')}
-                                </Badge>
-                                {task.score && (
-                                  <span className="text-sm text-gray-600">评分: {task.score}/5</span>
-                                )}
-                              </div>
-                              {task.comments && (
-                                <p className="text-sm text-green-700">{task.comments}</p>
+                          <Badge className={getStatusColor(task.status)}>
+                            {getStatusText(task.status)}
+                          </Badge>
+                        </div>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                          {task.abstract}
+                        </p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+                          <span>作者: {task.authors}</span>
+                          <span>分类: {task.category}</span>
+                          <span>投稿时间: {task.submissionDate}</span>
+                          <span>审稿完成: {task.submittedAt}</span>
+                        </div>
+                        
+                        {task.status === 'completed' && (
+                          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <div className="flex items-center space-x-4 mb-2">
+                              <Badge className={getRecommendationColor(task.recommendation || '')}>
+                                {getRecommendationText(task.recommendation || '')}
+                              </Badge>
+                              {task.score && (
+                                <span className="text-sm text-gray-600">评分: {task.score}/5</span>
                               )}
                             </div>
-                          )}
-                          
-                          {task.status === 'declined' && (
-                            <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                              <p className="text-sm text-red-700">已拒绝审稿此任务</p>
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex flex-col items-end space-y-2">
-                          <Badge className="bg-indigo-100 text-indigo-800">
-                            第{task.reviewRound || 1}轮
-                          </Badge>
-                          <Badge className={getStatusColor(task.status)}>
-                            {getStatusText(task.status, task.reviewRound)}
-                          </Badge>
-                        </div>
+                            {task.comments && (
+                              <p className="text-sm text-green-700">{task.comments}</p>
+                            )}
+                          </div>
+                        )}
+                        
+                        {task.status === 'declined' && (
+                          <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <p className="text-sm text-red-700">已拒绝审稿此任务</p>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex items-center space-x-4">
@@ -779,10 +769,6 @@ export default function ReviewerPage() {
           </div>
         )}
       </main>
-      
-      {/* Footer */}
-      <SimpleFooter />
-      
       {/* 退出确认弹窗 */}
       <SignOutModal
         isOpen={showSignOutModal}

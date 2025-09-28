@@ -36,34 +36,6 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {session ? (
               <>
-                {session.user?.role === 'author' && (
-                  <Link href="/submission">
-                    <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-100 shadow-lg">
-                      我的投稿
-                    </Button>
-                  </Link>
-                )}
-                {session.user?.role === 'editor' && (
-                  <Link href="/editor">
-                    <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-100 shadow-lg">
-                      编辑工作台
-                    </Button>
-                  </Link>
-                )}
-                {session.user?.role === 'reviewer' && (
-                  <Link href="/reviewer">
-                    <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-100 shadow-lg">
-                      审稿工作台
-                    </Button>
-                  </Link>
-                )}
-                {session.user?.role === 'admin' && (
-                  <Link href="/admin">
-                    <Button size="lg" className="bg-white text-pink-600 hover:bg-gray-100 shadow-lg">
-                      用户管理
-                    </Button>
-                  </Link>
-                )}
               </>
             ) : (
               <>
