@@ -25,10 +25,13 @@ interface Submission {
   submittedAt: string;
   lastModified: string;
   fileUrl?: string;
+  finalPdfUrl?: string; // 最终发表的PDF文件
   reviewComments?: string;
   canWithdraw?: boolean;
   canEdit?: boolean;
   canResubmit?: boolean;
+  canUploadFinalPdf?: boolean; // 是否可以上传最终PDF
+  paymentInfo?: PaymentInfo; // 付款信息
   // 新增字段
   reviews?: Review[];
   editorDecision?: EditorDecision;
@@ -94,6 +97,18 @@ interface SubmissionVersion {
   isCurrent: boolean;
 }
 
+interface PaymentInfo {
+  accountName: string;
+  accountNumber: string;
+  bankName: string;
+  amount: number;
+  currency: string;
+  dueDate: string;
+  paymentStatus: 'pending' | 'paid' | 'overdue';
+  paymentDate?: string;
+  transactionId?: string;
+}
+
 export default function SubmissionPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -103,6 +118,8 @@ export default function SubmissionPage() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showSignOutModal, setShowSignOutModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showFinalPdfModal, setShowFinalPdfModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [loading, setLoading] = useState(false);
   
   // 表单状态
@@ -113,6 +130,9 @@ export default function SubmissionPage() {
     category: '',
     file: null as File | null
   });
+
+  // 最终PDF上传状态
+  const [finalPdfFile, setFinalPdfFile] = useState<File | null>(null);
 
   const categories = [
     { id: 'color-theory', name: '色彩理论' },
@@ -379,6 +399,16 @@ export default function SubmissionPage() {
         canWithdraw: false,
         canEdit: false,
         canResubmit: false,
+        canUploadFinalPdf: true,
+        paymentInfo: {
+          accountName: '《色彩》期刊编辑部',
+          accountNumber: '1234567890123456',
+          bankName: '中国工商银行北京分行',
+          amount: 800,
+          currency: 'CNY',
+          dueDate: '2025-02-15',
+          paymentStatus: 'pending'
+        },
         reviews: [
           {
             id: 'rev-5',
@@ -571,6 +601,62 @@ export default function SubmissionPage() {
     const file = e.target.files?.[0];
     if (file) {
       setFormData(prev => ({ ...prev, file }));
+    }
+  };
+
+  const handleFinalPdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFinalPdfFile(file);
+    }
+  };
+
+  const handleUploadFinalPdf = (submission: Submission) => {
+    setSelectedSubmission(submission);
+    setShowFinalPdfModal(true);
+  };
+
+  const handleViewPayment = (submission: Submission) => {
+    setSelectedSubmission(submission);
+    setShowPaymentModal(true);
+  };
+
+  const handleSubmitFinalPdf = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!finalPdfFile || !selectedSubmission) {
+      alert('请选择要上传的PDF文件');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // 模拟上传成功
+      const finalPdfUrl = typeof window !== 'undefined' ? URL.createObjectURL(finalPdfFile) : '#';
+      
+      setSubmissions(prev => prev.map(s => 
+        s.id === selectedSubmission.id 
+          ? { 
+              ...s, 
+              finalPdfUrl,
+              status: 'published' as const,
+              canUploadFinalPdf: false,
+              lastModified: new Date().toISOString().split('T')[0]
+            }
+          : s
+      ));
+      
+      alert('最终PDF上传成功！文章已发表。');
+      setShowFinalPdfModal(false);
+      setFinalPdfFile(null);
+      setSelectedSubmission(null);
+    } catch (error) {
+      alert('上传失败，请重试');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1033,6 +1119,27 @@ export default function SubmissionPage() {
                         onClick={() => handleResubmitArticle(submission)}
                       >
                         重新提交
+                      </Button>
+                    )}
+                    
+                    {submission.canUploadFinalPdf && (
+                      <Button 
+                        size="sm" 
+                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+                        onClick={() => handleUploadFinalPdf(submission)}
+                      >
+                        上传最终PDF
+                      </Button>
+                    )}
+                    
+                    {submission.paymentInfo && (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                        onClick={() => handleViewPayment(submission)}
+                      >
+                        💰 付款信息
                       </Button>
                     )}
                     
@@ -1618,6 +1725,194 @@ export default function SubmissionPage() {
                   >
                     关闭
                   </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* 最终PDF上传模态框 */}
+        {showFinalPdfModal && selectedSubmission && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <Card className="w-full max-w-md mx-4 border-green-200">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center">
+                    <span className="text-green-600 mr-2">📄</span>
+                    上传最终PDF
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      setShowFinalPdfModal(false);
+                      setSelectedSubmission(null);
+                      setFinalPdfFile(null);
+                    }}
+                    className="border-green-300 text-green-600 hover:bg-green-50"
+                  >
+                    ✕
+                  </Button>
+                </CardTitle>
+                <CardDescription>
+                  请上传经过最终编辑和格式化的PDF文件
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmitFinalPdf} className="space-y-4">
+                  <div>
+                    <Label htmlFor="finalPdf" className="text-gray-700">最终PDF文件 *</Label>
+                    <Input
+                      id="finalPdf"
+                      type="file"
+                      accept=".pdf"
+                      onChange={handleFinalPdfChange}
+                      className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                      required
+                    />
+                    <p className="text-sm text-gray-500 mt-1">
+                      请确保PDF文件格式正确，包含所有必要的图表和参考文献
+                    </p>
+                  </div>
+
+                  <div className="flex space-x-3 pt-4">
+                    <Button 
+                      type="submit"
+                      disabled={loading || !finalPdfFile}
+                      className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+                    >
+                      {loading ? '上传中...' : '确认上传'}
+                    </Button>
+                    <Button 
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setShowFinalPdfModal(false);
+                        setSelectedSubmission(null);
+                        setFinalPdfFile(null);
+                      }}
+                      className="border-green-300 text-green-600 hover:bg-green-50"
+                    >
+                      取消
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* 付款信息模态框 */}
+        {showPaymentModal && selectedSubmission && selectedSubmission.paymentInfo && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <Card className="w-full max-w-lg mx-4 border-orange-200">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center">
+                    <span className="text-orange-600 mr-2">💰</span>
+                    付款信息
+                  </span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowPaymentModal(false)}
+                    className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                  >
+                    ✕
+                  </Button>
+                </CardTitle>
+                <CardDescription>
+                  文章已通过审核，请按以下信息完成付款
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h3 className="font-semibold text-green-800 mb-3">🎉 恭喜！您的文章已通过审核</h3>
+                  <p className="text-green-700 text-sm">
+                    文章《{selectedSubmission.title}》已通过专家评审，现需要完成发表费用支付。
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">付款信息</h4>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">收款单位：</span>
+                        <span className="font-medium">{selectedSubmission.paymentInfo.accountName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">银行账号：</span>
+                        <span className="font-medium font-mono">{selectedSubmission.paymentInfo.accountNumber}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">开户银行：</span>
+                        <span className="font-medium">{selectedSubmission.paymentInfo.bankName}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">付款金额：</span>
+                        <span className="font-bold text-orange-600">
+                          ¥{selectedSubmission.paymentInfo.amount} {selectedSubmission.paymentInfo.currency}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">付款期限：</span>
+                        <span className="font-medium">{selectedSubmission.paymentInfo.dueDate}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">付款状态：</span>
+                        <Badge className={
+                          selectedSubmission.paymentInfo.paymentStatus === 'paid' 
+                            ? 'bg-green-100 text-green-800'
+                            : selectedSubmission.paymentInfo.paymentStatus === 'overdue'
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                        }>
+                          {selectedSubmission.paymentInfo.paymentStatus === 'paid' ? '已付款' :
+                           selectedSubmission.paymentInfo.paymentStatus === 'overdue' ? '已逾期' : '待付款'}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 mb-2">📋 付款说明</h4>
+                    <ul className="text-sm text-blue-700 space-y-1">
+                      <li>• 请在付款备注中注明文章标题和作者姓名</li>
+                      <li>• 付款完成后，请保留付款凭证</li>
+                      <li>• 我们将在收到付款后3个工作日内确认</li>
+                      <li>• 确认付款后，您将收到发表确认邮件</li>
+                    </ul>
+                  </div>
+
+                  <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">⚠️ 重要提醒</h4>
+                    <p className="text-sm text-yellow-700">
+                      请在{selectedSubmission.paymentInfo.dueDate}前完成付款，逾期未付款将影响文章发表。
+                      如有疑问，请联系编辑部：contact@color-journal.com
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-4 border-t">
+                  <Button 
+                    variant="outline"
+                    onClick={() => setShowPaymentModal(false)}
+                    className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                  >
+                    关闭
+                  </Button>
+                  {selectedSubmission.paymentInfo.paymentStatus === 'pending' && (
+                    <Button 
+                      className="bg-orange-600 hover:bg-orange-700"
+                      onClick={() => {
+                        alert('付款功能开发中，请联系编辑部完成付款');
+                        setShowPaymentModal(false);
+                      }}
+                    >
+                      确认付款
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -265,16 +265,19 @@ export default function ArticlesPage() {
                   <CardDescription className="text-gray-600 mb-4 leading-relaxed">
                     {article.abstract}
                   </CardDescription>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="text-sm text-gray-500">
-                      <span>DOI: {article.doi}</span>
-                      <span className="ml-4">发表日期: {article.publishedAt}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span>DOI: {article.doi}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <span>发表日期: {article.publishedAt}</span>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
                         查看详情
                       </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Button size="sm" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
                         下载PDF
                       </Button>
                     </div>
