@@ -33,6 +33,7 @@ interface ReviewTask {
   recommendation?: 'accept' | 'minor_revision' | 'major_revision' | 'reject';
   comments?: string;
   confidentialComments?: string;
+  reviewRound?: number;
 }
 
 interface ReviewForm {
@@ -51,6 +52,8 @@ export default function ReviewerPage() {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'pending' | 'completed'>('pending');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   
   // 审稿表单
   const [reviewForm, setReviewForm] = useState<ReviewForm>({
@@ -449,7 +452,15 @@ export default function ReviewerPage() {
                   </CardContent>
                 </Card>
               ) : (
-                pendingTasks.map((task) => (
+                (() => {
+                  const totalPages = Math.ceil(pendingTasks.length / itemsPerPage);
+                  const startIndex = (currentPage - 1) * itemsPerPage;
+                  const endIndex = startIndex + itemsPerPage;
+                  const currentTasks = pendingTasks.slice(startIndex, endIndex);
+
+                  return (
+                    <>
+                      {currentTasks.map((task) => (
                   <Card key={task.id} className="border-purple-200 hover:shadow-md transition-shadow">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between mb-4">

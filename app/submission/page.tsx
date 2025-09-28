@@ -121,6 +121,8 @@ export default function SubmissionPage() {
   const [showFinalPdfModal, setShowFinalPdfModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   
   // 表单状态
   const [formData, setFormData] = useState({
@@ -440,6 +442,176 @@ export default function SubmissionPage() {
         reviewProgress: {
           totalReviewers: 2,
           completedReviews: 2,
+          pendingReviews: 0,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-6',
+        title: '色彩在医疗环境设计中的应用研究',
+        abstract: '研究色彩在医疗环境设计中的应用，探讨不同色彩对患者心理状态和康复效果的影响...',
+        keywords: '医疗环境,色彩应用,康复效果',
+        category: 'color-medicine',
+        status: 'revision_requested',
+        submittedAt: '2024-12-20',
+        lastModified: '2025-01-20',
+        fileUrl: '/files/manuscript-6.pdf',
+        canWithdraw: true,
+        canEdit: true,
+        canResubmit: true,
+        reviews: [
+          {
+            id: 'rev-7',
+            reviewerName: '审稿专家G',
+            status: 'completed',
+            score: 3,
+            recommendation: 'major_revision',
+            comments: '文章内容需要大幅修改，建议增加更多实验数据和案例分析。',
+            submittedAt: '2025-01-10',
+            deadline: '2025-01-15'
+          }
+        ],
+        reviewProgress: {
+          totalReviewers: 1,
+          completedReviews: 1,
+          pendingReviews: 0,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-7',
+        title: '数字媒体中的色彩管理技术',
+        abstract: '探讨数字媒体环境下的色彩管理技术，研究跨平台色彩一致性的实现方法...',
+        keywords: '数字媒体,色彩管理,跨平台',
+        category: 'digital-color',
+        status: 'under_review',
+        submittedAt: '2024-12-15',
+        lastModified: '2024-12-15',
+        fileUrl: '/files/manuscript-7.pdf',
+        canWithdraw: true,
+        canEdit: false,
+        canResubmit: false,
+        reviewProgress: {
+          totalReviewers: 2,
+          completedReviews: 1,
+          pendingReviews: 1,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-8',
+        title: '传统色彩文化的现代传承',
+        abstract: '分析传统色彩文化的内涵，探讨其在现代设计中的传承与创新应用...',
+        keywords: '传统色彩,文化传承,现代设计',
+        category: 'color-culture',
+        status: 'submitted',
+        submittedAt: '2024-12-10',
+        lastModified: '2024-12-10',
+        fileUrl: '/files/manuscript-8.pdf',
+        canWithdraw: true,
+        canEdit: false,
+        canResubmit: false,
+        reviewProgress: {
+          totalReviewers: 0,
+          completedReviews: 0,
+          pendingReviews: 0,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-9',
+        title: '色彩在儿童教育环境中的影响',
+        abstract: '研究色彩在儿童教育环境中的影响，探讨不同色彩对儿童学习效果和情绪状态的作用...',
+        keywords: '儿童教育,色彩影响,学习效果',
+        category: 'color-psychology',
+        status: 'draft',
+        submittedAt: '',
+        lastModified: '2024-12-05',
+        fileUrl: '/files/manuscript-9.pdf',
+        canWithdraw: false,
+        canEdit: true,
+        canResubmit: false,
+        reviewProgress: {
+          totalReviewers: 0,
+          completedReviews: 0,
+          pendingReviews: 0,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-10',
+        title: '色彩测量技术的标准化研究',
+        abstract: '研究色彩测量技术的标准化问题，建立统一的色彩测量和评价体系...',
+        keywords: '色彩测量,标准化,评价体系',
+        category: 'color-technology',
+        status: 'rejected',
+        submittedAt: '2024-11-30',
+        lastModified: '2024-12-01',
+        fileUrl: '/files/manuscript-10.pdf',
+        canWithdraw: false,
+        canEdit: false,
+        canResubmit: true,
+        reviews: [
+          {
+            id: 'rev-8',
+            reviewerName: '审稿专家H',
+            status: 'completed',
+            score: 2,
+            recommendation: 'reject',
+            comments: '文章质量不符合发表要求，建议重新研究后再投稿。',
+            submittedAt: '2024-12-01',
+            deadline: '2024-12-05'
+          }
+        ],
+        editorDecision: {
+          decision: 'rejected',
+          comments: '经过审稿专家评审，文章质量不符合发表要求，建议重新研究后再投稿。',
+          decidedAt: '2024-12-01',
+          decidedBy: '主编'
+        },
+        reviewProgress: {
+          totalReviewers: 1,
+          completedReviews: 1,
+          pendingReviews: 0,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-11',
+        title: '色彩在建筑立面设计中的表现力',
+        abstract: '分析色彩在建筑立面设计中的表现力，研究色彩对建筑视觉效果和城市景观的影响...',
+        keywords: '建筑立面,色彩表现,城市景观',
+        category: 'color-design',
+        status: 'under_review',
+        submittedAt: '2024-11-25',
+        lastModified: '2024-11-25',
+        fileUrl: '/files/manuscript-11.pdf',
+        canWithdraw: true,
+        canEdit: false,
+        canResubmit: false,
+        reviewProgress: {
+          totalReviewers: 3,
+          completedReviews: 2,
+          pendingReviews: 1,
+          declinedReviews: 0
+        }
+      },
+      {
+        id: 'sub-12',
+        title: '色彩在食品包装设计中的心理效应',
+        abstract: '研究色彩在食品包装设计中的心理效应，探讨色彩对消费者购买决策的影响机制...',
+        keywords: '食品包装,色彩心理,购买决策',
+        category: 'color-psychology',
+        status: 'submitted',
+        submittedAt: '2024-11-20',
+        lastModified: '2024-11-20',
+        fileUrl: '/files/manuscript-12.pdf',
+        canWithdraw: true,
+        canEdit: false,
+        canResubmit: false,
+        reviewProgress: {
+          totalReviewers: 0,
+          completedReviews: 0,
           pendingReviews: 0,
           declinedReviews: 0
         }
@@ -869,7 +1041,7 @@ export default function SubmissionPage() {
         </div>
 
         {/* 稿件统计 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
           <Card className="border-orange-200">
             <CardContent className="p-6 text-center">
               <div className="text-2xl font-bold text-orange-600 mb-2">{submissions.length}</div>
@@ -906,7 +1078,18 @@ export default function SubmissionPage() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">我的稿件</h2>
           
-          {submissions.length === 0 ? (
+          {/* 分页计算 */}
+          {(() => {
+            const totalPages = Math.ceil(submissions.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentSubmissions = submissions
+              .sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime())
+              .slice(startIndex, endIndex);
+            
+            return (
+              <>
+                {submissions.length === 0 ? (
             <Card className="border-orange-200">
               <CardContent className="p-8 text-center">
                 <div className="text-gray-400 mb-4">
@@ -929,23 +1112,28 @@ export default function SubmissionPage() {
               </CardContent>
             </Card>
           ) : (
-            submissions
-              .sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime())
-              .map((submission) => (
+            currentSubmissions.map((submission) => (
               <Card key={submission.id} className="border-orange-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <div className="mb-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900 flex-1">
                         {submission.title}
                       </h3>
+                      <Badge className={getStatusColor(submission.status)}>
+                        {getStatusText(submission.status)}
+                      </Badge>
+                    </div>
                       <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                         {submission.abstract}
                       </p>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 text-sm text-gray-500">
                         <span>关键词: {submission.keywords}</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>分类: {categories.find(c => c.id === submission.category)?.name}</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>投稿时间: {submission.submittedAt || '未提交'}</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>最后修改: {submission.lastModified}</span>
                       </div>
                       
@@ -953,7 +1141,7 @@ export default function SubmissionPage() {
                       {submission.reviewProgress && submission.reviewProgress.totalReviewers > 0 && (
                         <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                           <h4 className="text-sm font-semibold text-blue-800 mb-2">审稿进度</h4>
-                          <div className="flex items-center space-x-4 text-sm">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 text-sm">
                             <span className="text-blue-700">
                               总审稿人: {submission.reviewProgress.totalReviewers}
                             </span>
@@ -1001,7 +1189,7 @@ export default function SubmissionPage() {
                       {submission.editorDecision && (
                         <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                           <h4 className="text-sm font-semibold text-green-800 mb-2">编辑决策</h4>
-                          <div className="flex items-center space-x-2 mb-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0 mb-1">
                             <Badge className={getDecisionColor(submission.editorDecision.decision)}>
                               {getDecisionText(submission.editorDecision.decision)}
                             </Badge>
@@ -1050,7 +1238,7 @@ export default function SubmissionPage() {
                       {submission.versions && submission.versions.length > 1 && (
                         <div className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
                           <h4 className="text-sm font-semibold text-purple-800 mb-2">版本信息</h4>
-                          <div className="flex items-center space-x-4 text-sm">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 text-sm">
                             <span className="text-purple-700">
                               当前版本: v{submission.versions.find(v => v.isCurrent)?.version}
                             </span>
@@ -1064,18 +1252,12 @@ export default function SubmissionPage() {
                         </div>
                       )}
                     </div>
-                    <div className="flex flex-col items-end space-y-2">
-                      <Badge className={getStatusColor(submission.status)}>
-                        {getStatusText(submission.status)}
-                      </Badge>
-                    </div>
-                  </div>
                   
-                  <div className="flex items-center space-x-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="border-pink-300 text-pink-600 hover:bg-pink-50"
+                      className="border-pink-300 text-pink-600 hover:bg-pink-50 w-full sm:w-auto"
                       onClick={() => handleViewDetails(submission)}
                     >
                       查看详情
@@ -1085,7 +1267,7 @@ export default function SubmissionPage() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="border-gray-300 text-gray-600 hover:bg-gray-50"
+                        className="border-gray-300 text-gray-600 hover:bg-gray-50 w-full sm:w-auto"
                         onClick={() => handleViewHistory(submission)}
                       >
                         📋 审稿历史
@@ -1095,7 +1277,7 @@ export default function SubmissionPage() {
                     {submission.canEdit && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
+                        className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 w-full sm:w-auto"
                         onClick={() => handleEditArticle(submission)}
                       >
                         编辑
@@ -1105,7 +1287,7 @@ export default function SubmissionPage() {
                     {submission.canWithdraw && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700"
+                        className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 w-full sm:w-auto"
                         onClick={() => handleWithdrawArticle(submission)}
                       >
                         撤回
@@ -1115,7 +1297,7 @@ export default function SubmissionPage() {
                     {submission.canResubmit && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 w-full sm:w-auto"
                         onClick={() => handleResubmitArticle(submission)}
                       >
                         重新提交
@@ -1125,7 +1307,7 @@ export default function SubmissionPage() {
                     {submission.canUploadFinalPdf && (
                       <Button 
                         size="sm" 
-                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+                        className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 w-full sm:w-auto"
                         onClick={() => handleUploadFinalPdf(submission)}
                       >
                         上传最终PDF
@@ -1136,7 +1318,7 @@ export default function SubmissionPage() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                        className="border-orange-300 text-orange-600 hover:bg-orange-50 w-full sm:w-auto"
                         onClick={() => handleViewPayment(submission)}
                       >
                         💰 付款信息
@@ -1147,7 +1329,7 @@ export default function SubmissionPage() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                        className="border-purple-300 text-purple-600 hover:bg-purple-50 w-full sm:w-auto"
                         onClick={() => handleDownloadFile(submission)}
                       >
                         下载文件
@@ -1158,6 +1340,46 @@ export default function SubmissionPage() {
               </Card>
             ))
           )}
+          
+          {/* 分页组件 */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex justify-center">
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                >
+                  上一页
+                </Button>
+                
+                {/* 页码按钮 */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Button
+                    key={page}
+                    variant="outline"
+                    className={currentPage === page ? "bg-orange-600 text-white" : ""}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </Button>
+                ))}
+                
+                <Button 
+                  variant="outline" 
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                >
+                  下一页
+                </Button>
+              </div>
+            </div>
+          )}
+          </>
+            );
+          })()}
         </div>
 
         {/* 投稿表单模态框 */}

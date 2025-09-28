@@ -73,6 +73,8 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('users');
   const [statistics, setStatistics] = useState<Statistics | null>(null);
   const [exportLoading, setExportLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   const [exportDateRange, setExportDateRange] = useState({
     startDate: '',
     endDate: ''
@@ -538,7 +540,15 @@ export default function AdminPage() {
 
           {/* 用户列表 */}
           <div className="space-y-4">
-            {filteredUsers.map((user) => (
+            {(() => {
+              const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+              const startIndex = (currentPage - 1) * itemsPerPage;
+              const endIndex = startIndex + itemsPerPage;
+              const currentUsers = filteredUsers.slice(startIndex, endIndex);
+
+              return (
+                <>
+                  {currentUsers.map((user) => (
               <Card key={user.id} className="border-purple-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -596,6 +606,45 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
             ))}
+
+                  {/* 分页组件 */}
+                  {totalPages > 1 && (
+                    <div className="mt-8 flex justify-center">
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          disabled={currentPage === 1}
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                        >
+                          上一页
+                        </Button>
+
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <Button
+                            key={page}
+                            variant="outline"
+                            className={currentPage === page ? "bg-purple-600 text-white" : ""}
+                            onClick={() => setCurrentPage(page)}
+                          >
+                            {page}
+                          </Button>
+                        ))}
+
+                        <Button
+                          variant="outline"
+                          disabled={currentPage === totalPages}
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                        >
+                          下一页
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         </div>
         )}

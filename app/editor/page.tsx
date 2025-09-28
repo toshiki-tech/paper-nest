@@ -63,6 +63,8 @@ export default function EditorPage() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSignOutModal, setShowSignOutModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   
   // 审稿人分配表单
   const [assignmentForm, setAssignmentForm] = useState({
@@ -588,7 +590,15 @@ export default function EditorPage() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">稿件管理</h2>
           
-          {articles.map((article) => (
+          {(() => {
+            const totalPages = Math.ceil(articles.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentArticles = articles.slice(startIndex, endIndex);
+
+            return (
+              <>
+                {currentArticles.map((article) => (
             <Card key={article.id} className="border-purple-200 hover:shadow-md transition-shadow">
               <CardContent className="p-4 md:p-6">
                 {/* 桌面端布局 */}
@@ -763,7 +773,46 @@ export default function EditorPage() {
                 </div>
               </CardContent>
             </Card>
-          ))}
+                ))}
+
+                {/* 分页组件 */}
+                {totalPages > 1 && (
+                  <div className="mt-8 flex justify-center">
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                      >
+                        上一页
+                      </Button>
+
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <Button
+                          key={page}
+                          variant="outline"
+                          className={currentPage === page ? "bg-purple-600 text-white" : ""}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </Button>
+                      ))}
+
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+                      >
+                        下一页
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
 
         {/* 审稿人分配模态框 */}

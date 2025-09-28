@@ -25,7 +25,7 @@ export default function ContactPage() {
         {/* 页面标题 - 科技感设计 */}
         <div className="text-center mb-12 md:mb-20 relative">
           {/* 背景装饰 */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-96 h-96 bg-gradient-to-r from-slate-200/20 via-purple-200/20 to-slate-200/20 rounded-full blur-3xl"></div>
           </div>
           
@@ -152,7 +152,7 @@ export default function ContactPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">

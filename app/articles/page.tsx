@@ -13,6 +13,8 @@ export default function ArticlesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedYear, setSelectedYear] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const categories = [
     { value: 'all', label: '全部分类' },
@@ -129,6 +131,198 @@ export default function ArticlesPage() {
       downloadCount: 145,
       citationCount: 7,
       publishedAt: '2023-09-20'
+    },
+    {
+      id: 7,
+      title: '色彩感知的神经机制研究进展',
+      authors: '林神经, 黄感知',
+      abstract: '综述色彩感知的神经机制研究最新进展，探讨大脑处理色彩信息的神经通路和认知过程。',
+      keywords: ['色彩感知', '神经机制', '认知科学'],
+      category: 'color-psychology',
+      year: 2023,
+      volume: 6,
+      issue: 2,
+      pages: '56-72',
+      doi: '10.1234/color.2023.002',
+      downloadCount: 198,
+      citationCount: 14,
+      publishedAt: '2023-06-10'
+    },
+    {
+      id: 8,
+      title: '可持续设计中的色彩选择策略',
+      authors: '马可持续, 钱环保',
+      abstract: '研究可持续设计理念下的色彩选择策略，探讨环保材料与色彩应用的结合方式。',
+      keywords: ['可持续设计', '环保色彩', '绿色设计'],
+      category: 'color-design',
+      year: 2023,
+      volume: 6,
+      issue: 1,
+      pages: '34-48',
+      doi: '10.1234/color.2023.001',
+      downloadCount: 176,
+      citationCount: 11,
+      publishedAt: '2023-03-15'
+    },
+    {
+      id: 9,
+      title: '色彩在品牌识别中的战略作用',
+      authors: '赵品牌, 孙识别',
+      abstract: '分析色彩在品牌识别系统中的战略作用，研究色彩选择对品牌认知和消费者行为的影响。',
+      keywords: ['品牌识别', '色彩战略', '消费者行为'],
+      category: 'color-design',
+      year: 2022,
+      volume: 5,
+      issue: 4,
+      pages: '67-82',
+      doi: '10.1234/color.2022.004',
+      downloadCount: 223,
+      citationCount: 19,
+      publishedAt: '2022-12-20'
+    },
+    {
+      id: 10,
+      title: '虚拟现实环境中的色彩渲染技术',
+      authors: '周虚拟, 吴现实',
+      abstract: '研究虚拟现实环境中的色彩渲染技术，探讨沉浸式体验中的色彩表现和优化方法。',
+      keywords: ['虚拟现实', '色彩渲染', '沉浸式体验'],
+      category: 'digital-color',
+      year: 2022,
+      volume: 5,
+      issue: 3,
+      pages: '91-108',
+      doi: '10.1234/color.2022.003',
+      downloadCount: 187,
+      citationCount: 13,
+      publishedAt: '2022-09-25'
+    },
+    {
+      id: 11,
+      title: '色彩在医疗环境设计中的应用研究',
+      authors: '李医疗, 王环境',
+      abstract: '探讨色彩在医疗环境设计中的应用，研究色彩对患者心理状态和康复效果的影响。',
+      keywords: ['医疗环境', '色彩应用', '康复效果'],
+      category: 'color-medicine',
+      year: 2022,
+      volume: 5,
+      issue: 2,
+      pages: '45-61',
+      doi: '10.1234/color.2022.002',
+      downloadCount: 156,
+      citationCount: 8,
+      publishedAt: '2022-06-18'
+    },
+    {
+      id: 12,
+      title: '中国传统色彩体系的现代解读',
+      authors: '陈传统, 刘现代',
+      abstract: '深入解读中国传统色彩体系的文化内涵，探讨其在现代设计中的创新应用价值。',
+      keywords: ['中国传统', '色彩体系', '文化内涵'],
+      category: 'color-culture',
+      year: 2022,
+      volume: 5,
+      issue: 1,
+      pages: '23-39',
+      doi: '10.1234/color.2022.001',
+      downloadCount: 201,
+      citationCount: 16,
+      publishedAt: '2022-03-12'
+    },
+    {
+      id: 13,
+      title: '色彩测量技术的标准化研究',
+      authors: '张测量, 黄标准',
+      abstract: '研究色彩测量技术的标准化问题，建立统一的色彩测量和评价体系。',
+      keywords: ['色彩测量', '标准化', '评价体系'],
+      category: 'color-technology',
+      year: 2021,
+      volume: 4,
+      issue: 4,
+      pages: '78-94',
+      doi: '10.1234/color.2021.004',
+      downloadCount: 134,
+      citationCount: 6,
+      publishedAt: '2021-12-08'
+    },
+    {
+      id: 14,
+      title: '色彩在儿童教育环境中的影响研究',
+      authors: '王儿童, 李教育',
+      abstract: '研究色彩在儿童教育环境中的影响，探讨不同色彩对儿童学习效果和情绪状态的作用。',
+      keywords: ['儿童教育', '色彩影响', '学习效果'],
+      category: 'color-psychology',
+      year: 2021,
+      volume: 4,
+      issue: 3,
+      pages: '52-68',
+      doi: '10.1234/color.2021.003',
+      downloadCount: 189,
+      citationCount: 12,
+      publishedAt: '2021-09-15'
+    },
+    {
+      id: 15,
+      title: '色彩在建筑立面设计中的表现力',
+      authors: '刘建筑, 陈立面',
+      abstract: '分析色彩在建筑立面设计中的表现力，研究色彩对建筑视觉效果和城市景观的影响。',
+      keywords: ['建筑立面', '色彩表现', '城市景观'],
+      category: 'color-design',
+      year: 2021,
+      volume: 4,
+      issue: 2,
+      pages: '41-57',
+      doi: '10.1234/color.2021.002',
+      downloadCount: 167,
+      citationCount: 9,
+      publishedAt: '2021-06-22'
+    },
+    {
+      id: 16,
+      title: '色彩在食品包装设计中的心理效应',
+      authors: '孙食品, 赵包装',
+      abstract: '研究色彩在食品包装设计中的心理效应，探讨色彩对消费者购买决策的影响机制。',
+      keywords: ['食品包装', '色彩心理', '购买决策'],
+      category: 'color-psychology',
+      year: 2021,
+      volume: 4,
+      issue: 1,
+      pages: '29-45',
+      doi: '10.1234/color.2021.001',
+      downloadCount: 212,
+      citationCount: 17,
+      publishedAt: '2021-03-10'
+    },
+    {
+      id: 17,
+      title: '色彩在纺织品设计中的创新应用',
+      authors: '吴纺织, 郑设计',
+      abstract: '探讨色彩在纺织品设计中的创新应用，研究色彩与材质、纹理的协调关系。',
+      keywords: ['纺织品', '色彩创新', '材质协调'],
+      category: 'color-design',
+      year: 2020,
+      volume: 3,
+      issue: 4,
+      pages: '63-79',
+      doi: '10.1234/color.2020.004',
+      downloadCount: 145,
+      citationCount: 7,
+      publishedAt: '2020-12-05'
+    },
+    {
+      id: 18,
+      title: '色彩在数字艺术创作中的表现手法',
+      authors: '林数字, 黄艺术',
+      abstract: '分析色彩在数字艺术创作中的表现手法，探讨数字技术与色彩艺术的融合方式。',
+      keywords: ['数字艺术', '色彩表现', '技术融合'],
+      category: 'digital-color',
+      year: 2020,
+      volume: 3,
+      issue: 3,
+      pages: '87-103',
+      doi: '10.1234/color.2020.003',
+      downloadCount: 178,
+      citationCount: 11,
+      publishedAt: '2020-09-18'
     }
   ];
 
@@ -142,16 +336,31 @@ export default function ArticlesPage() {
     return matchesSearch && matchesCategory && matchesYear;
   });
 
+  // 分页计算
+  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentArticles = filteredArticles.slice(startIndex, endIndex);
+
+  // 重置到第一页当筛选条件改变时
+  const handleFilterChange = (type: string, value: string) => {
+    setCurrentPage(1);
+    if (type === 'search') setSearchTerm(value);
+    if (type === 'category') setSelectedCategory(value);
+    if (type === 'year') setSelectedYear(value);
+  };
+
   const getCategoryLabel = (category: string) => {
     const cat = categories.find(c => c.value === category);
     return cat ? cat.label : category;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 flex flex-col">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <main className="py-16 flex-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 页面标题 */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -171,12 +380,12 @@ export default function ArticlesPage() {
                   <Input
                     placeholder="搜索文章标题、作者或关键词..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => handleFilterChange('search', e.target.value)}
                     className="w-full"
                   />
                 </div>
                 <div>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <Select value={selectedCategory} onValueChange={(value) => handleFilterChange('category', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="选择分类" />
                     </SelectTrigger>
@@ -190,7 +399,7 @@ export default function ArticlesPage() {
                   </Select>
                 </div>
                 <div>
-                  <Select value={selectedYear} onValueChange={setSelectedYear}>
+                  <Select value={selectedYear} onValueChange={(value) => handleFilterChange('year', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="选择年份" />
                     </SelectTrigger>
@@ -210,7 +419,7 @@ export default function ArticlesPage() {
 
         {/* 文章列表 */}
         <div className="space-y-8">
-          {filteredArticles.length === 0 ? (
+          {currentArticles.length === 0 ? (
             <Card>
               <CardContent className="p-12 text-center">
                 <div className="text-gray-400 mb-4">
@@ -227,7 +436,7 @@ export default function ArticlesPage() {
               </CardContent>
             </Card>
           ) : (
-            filteredArticles.map((article) => (
+            currentArticles.map((article) => (
               <Card key={article.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -274,10 +483,25 @@ export default function ArticlesPage() {
                       </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full sm:w-auto"
+                        onClick={() => window.open(`/articles/${article.id}`, '_blank')}
+                      >
                         查看详情
                       </Button>
-                      <Button size="sm" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
+                      <Button 
+                        size="sm" 
+                        className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                        onClick={() => {
+                          // 模拟PDF下载
+                          const link = document.createElement('a');
+                          link.href = `/api/articles/${article.id}/download`;
+                          link.download = `${article.title}.pdf`;
+                          link.click();
+                        }}
+                      >
                         下载PDF
                       </Button>
                     </div>
@@ -289,22 +513,36 @@ export default function ArticlesPage() {
         </div>
 
         {/* 分页 */}
-        {filteredArticles.length > 0 && (
+        {totalPages > 1 && (
           <div className="mt-12 flex justify-center">
             <div className="flex items-center space-x-2">
-              <Button variant="outline" disabled>
+              <Button 
+                variant="outline" 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+              >
                 上一页
               </Button>
-              <Button variant="outline" className="bg-blue-600 text-white">
-                1
-              </Button>
-              <Button variant="outline">
-                2
-              </Button>
-              <Button variant="outline">
-                3
-              </Button>
-              <Button variant="outline">
+              
+              {/* 页码按钮 */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant="outline"
+                  className={currentPage === page ? "bg-blue-600 text-white" : ""}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              ))}
+              
+              <Button 
+                variant="outline" 
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+              >
                 下一页
               </Button>
             </div>
@@ -332,6 +570,7 @@ export default function ArticlesPage() {
               <div className="text-gray-600">合作机构</div>
             </div>
           </div>
+        </div>
         </div>
       </main>
 

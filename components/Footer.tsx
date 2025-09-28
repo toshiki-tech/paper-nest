@@ -24,21 +24,14 @@ export default function Footer() {
             <p className="text-gray-300 leading-relaxed">
               专业的色彩研究期刊，致力于推动色彩学科的发展与创新。
             </p>
-            <div className="flex space-x-4 mt-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-200 shadow-sm">
-                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-200 shadow-sm">
-                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center hover:scale-110 transition-transform duration-200 shadow-sm">
-                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-                </svg>
+            <div className="mt-4">
+              <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <span className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></span>
+                <span>SCI收录期刊</span>
+                <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
+                <span>影响因子 2.8</span>
+                <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
+                <span>月刊发行</span>
               </div>
             </div>
           </div>
