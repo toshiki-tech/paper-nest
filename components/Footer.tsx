@@ -105,9 +105,9 @@ export default function Footer() {
               © {new Date().getFullYear()} 《色彩》期刊编辑部. 保留所有权利.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400">
-              <span className="hover:text-slate-300 transition-colors duration-200 cursor-pointer">隐私政策</span>
-              <span className="hover:text-slate-300 transition-colors duration-200 cursor-pointer">使用条款</span>
-              <span className="hover:text-slate-300 transition-colors duration-200 cursor-pointer">Cookie政策</span>
+              <Link href="/privacy-policy" className="hover:text-slate-300 transition-colors duration-200">隐私政策</Link>
+              <Link href="/terms-of-service" className="hover:text-slate-300 transition-colors duration-200">使用条款</Link>
+              <Link href="/cookie-policy" className="hover:text-slate-300 transition-colors duration-200">Cookie政策</Link>
             </div>
           </div>
         </div>
